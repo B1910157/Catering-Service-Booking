@@ -1,0 +1,146 @@
+/* title */
+
+h2 {
+    text-align: center;
+}
+
+.title {
+    font-weight: bold;
+    background: -webkit-linear-gradient(-90deg, rgb(8, 36, 192), rgb(28, 217, 238) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    padding-bottom: 10px;
+}
+.title:after {
+	position: relative;
+	left: 50%;
+	display: block;		
+	content: " "; 
+	width: 200px;
+	height: 3px;	
+	transform: skewX(-12deg) translateX(-50%);
+	background: radial-gradient(#08a8d4, rgb(255, 255, 255));	 
+}
+
+.note {
+    font-weight: bold;
+    background: -webkit-linear-gradient(-90deg, rgb(182, 27, 0), rgb(1, 39, 130) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    padding-bottom: 10px;
+}
+
+
+
+
+/* Card */
+.card-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    flex-wrap: wrap;
+    position: relative;
+    
+}
+
+.card-item {
+    display: flex;
+    width: 32%;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+    height: 460px;
+}
+.card-item-search {
+    display: flex;
+    width: 24%;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+    height: 460px;
+}
+
+.card-footer {
+    display:flex; /**/
+    align-items: center;
+    justify-content: center;
+    
+    position: relative;
+    left: 0;
+    bottom: 0;
+   
+}
+
+.card-button {
+    border-radius: 10px;
+    border: 0px;
+    padding: 5px 20px;
+    font-weight: bold;
+    outline: none;
+    
+}
+
+.card-button__blue {
+    background-color: #e71523;
+    color: #fff;
+}
+
+/* form */
+.form {
+    padding: 20px;
+    margin: 0 auto;
+    font-weight: 700px;
+}
+
+.form input {
+    width: 100%;
+    padding: 10px 0;
+}
+
+.gradient-custom-3 {
+    /* fallback for old browsers */
+    background: #84fab0;
+
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to right, rgba(132, 250, 176, 0.5), rgba(143, 211, 244, 0.5));
+
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to right, rgba(132, 250, 176, 0.5), rgba(143, 211, 244, 0.5))
+}
+
+.gradient-custom-4 {
+    /* fallback for old browsers */
+    background: #84fab0;
+
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to right, rgba(132, 250, 176, 1), rgba(143, 211, 244, 1));
+
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to right, rgba(132, 250, 176, 1), rgba(143, 211, 244, 1))
+}
+
+/* form login */
+
+#login .container #login-row #login-column #login-box {
+    max-width: 600px;
+    height: 350px;
+    border: 1px solid #a29a9a;
+    background-color: #ffffff;
+}
+
+#login .container #login-row #login-column #login-box #login-form {
+    padding: 20px;
+}
+
+#login .container #login-row #login-column #login-box #login-form #register-link {
+    margin-top: -85px;
+}
+/* input_number */
+input[type='number']{
+    width: 50px;
+} 
