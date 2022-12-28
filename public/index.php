@@ -216,7 +216,8 @@ $id_loaitiec = isset($_REQUEST['id_loaitiec']) ?
 
                                         soluongban: {
                                             required: true,
-                                            min: 10
+                                            min: 10,
+                                            max: 500
                                         },
                                         giodat: "required",
                                         ngaydat: "required",
@@ -231,7 +232,8 @@ $id_loaitiec = isset($_REQUEST['id_loaitiec']) ?
                                         id_loaitiec: "Chọn loại tiệc",
                                         soluongban: {
                                             required: "Nhập số lượng bàn",
-                                            min: "Phục vụ từ 10 bàn"
+                                            min: "Phục vụ từ 10 bàn",
+                                            max: "Số bàn quá lớn"
                                         },
                                         giodat: "Chọn giờ đặt",
                                         ngaydat: "Chọn ngày đặt",

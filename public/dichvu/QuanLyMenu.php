@@ -21,20 +21,36 @@
     use CT466\Project\LoaiMon;
     use CT466\Project\MonAn;
     use CT466\Project\chitiet;
+    use CT466\Project\dichvu;
+    use CT466\Project\dattiec;
 
     $loaimon = new LoaiMon($PDO);
     $menu = new Menu($PDO);
     $monan = new MonAn($PDO);
     $chitiet = new chitiet($PDO);
+    $dichvu = new dichvu($PDO);
+    $dattiec = new dattiec($PDO);
+
 
     $monans = $monan->all();
+    $dichvus = $dichvu->all();
     $loaimons = $loaimon->all();
     $menus = $menu->allmenu();
 
     // $menus = $menu->all();
+    if (isset($_SESSION['id_dv'])) {
+        $id_dv = $_SESSION['id_dv'];
+        // echo  $_SESSION['id_dv'];
+        $dattiecs = $dattiec->all();
+        $dichvuLogin = $dichvu->find($id_dv);
+        $menus = $menu->allmenu_DV($id_dv);
+    } else {
+        echo '<script>alert("Bạn chưa đăng nhập!!!.");</script>';
+        echo '<script>window.location.href= "loginDV.php";</script>';
+    }
 
-    $menuID = isset($_REQUEST['id_menu']) ?
-        filter_var($_REQUEST['id_menu'], FILTER_SANITIZE_NUMBER_INT) : -1;
+
+
     ?>
     ?>
 
@@ -45,14 +61,21 @@
                 <table class="table">
                     <tr>
                         <td>Tên Menu</td>
-                        <td><input require type="text" name="tenmenu" placeholder="Nhập tên menu" value=""></td>
+                        <td>
+                            <input type="text" name="id_dv" value="<?php echo $id_dv; ?>">
+                        </td>
+                        <td>
+                            <input require type="text" name="tenmenu" placeholder="Nhập tên menu" value="">
+                        </td>
                     </tr>
                 </table>
 
 
-
                 <button type="submit">ADD MENU</button>
+
             </form>
+
+
             <hr><br><br>
             <h3 class="title text-center">Danh Mục menu</h3>
 
@@ -105,26 +128,30 @@
                                 foreach ($chitiets as $chitiet1) : {
                                         // code...
                                 ?>
-                            
-                                <?php
-                                
-                                 $idmonn =  $monan->find($chitiet1->id_mon);
-                                $gia = $idmonn->gia_mon;
-                                $tong = $tong + $gia;
-                                // echo $gia;
-                                         ?>
-                            
+
+                                        <?php
+
+                                        $idmonn =  $monan->find($chitiet1->id_mon);
+                                        $gia = $idmonn->gia_mon;
+                                        $tong = $tong + $gia;
+                                        // echo $gia;
+                                        ?>
+
                                 <?php }
                                 endforeach ?>
-                                 <?php echo $tong," vnd"; ?>
+                                <?php echo $tong, " vnd"; ?>
+
+
+
+
                             </td>
-                    <td>
-                        <a class="btn btn-sm btn-danger" href="delMenu.php?id=<?php echo $id; ?>"><i class="fa fa-trash" aria-hidden="true">XÓA Menu</i></a>
-                        <a class="text-warning" href="editMenu.php?id_me=<?php echo $id; ?>">Sửa Menu</a>
-                        <a class="text-danger" href="choose.php?id_me=<?php echo $id; ?>">Thêm món</a>
-                        <a href="chitietmenu.php?id=<?php echo $menu->getId(); ?>">chi tiet <?php echo $menu->getId(); ?></a>
-                    </td>
-                    </form>
+                            <td>
+                                <a class="btn btn-sm btn-danger" href="delMenu.php?id=<?php echo $id; ?>"><i class="fa fa-trash" aria-hidden="true">XÓA Menu</i></a>
+                                <a class="text-warning" href="editMenu.php?id_me=<?php echo $id; ?>">Sửa Menu</a>
+                                <a class="text-danger" href="choose.php?id_me=<?php echo $id; ?>">Thêm món</a>
+                                <a href="chitietmenu.php?id=<?php echo $menu->getId(); ?>">chi tiet <?php echo $menu->getId(); ?></a>
+                            </td>
+
                         </tr>
                         <tr>
 
@@ -139,6 +166,7 @@
 
 
     </div>
+
 </body>
 
 </html>

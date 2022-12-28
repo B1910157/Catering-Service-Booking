@@ -112,6 +112,7 @@ $chitiets = $chitiet->showmenu($id);
                         <td> <?php
 
                                 $idmonn =  $monan->find($chitiet->id_mon);
+                                $gia = $idmonn->gia_mon;
 
                                 echo number_format($idmonn->gia_mon, 0, '', '.'); ?><sup> vnđ</sup></td>
 

@@ -7,7 +7,7 @@ class chitiet
 	private $db;
 
 	private $id = -1;
-	
+	public $id_dv;
     public $id_menu;
     public $id_mon;
     // public $gia_menu;
@@ -26,6 +26,9 @@ class chitiet
 
 	public function fill(array $data)
 	{
+		if (isset($data['id_dv'])) {
+			$this->id_dv = trim($data['id_dv']);
+		}
         if (isset($data['id_menu'])) {
 			$this->id_menu = trim($data['id_menu']);
 		}
@@ -47,6 +50,9 @@ class chitiet
 
 	public function validate()
 	{
+		if (!$this->id_dv) {
+			$this->errors['id_dv'] = 'Ten menu không hợp lệ.';
+		}
 		if (!$this->id_menu) {
 			$this->errors['id_menu'] = 'Ten menu không hợp lệ.';
 		}
@@ -66,6 +72,7 @@ class chitiet
 	{
 		[
             'id' => $this->id,
+			'id_dv' => $this->id_dv,
 			'id_menu' => $this->id_menu,
 			
             // 'gia_menu'=> $this->gia_menu,
@@ -99,6 +106,8 @@ class chitiet
 			$menus[] = $menu;
 		} return $menus;
 	} 
+
+	//hien thi menu theo id menu
 	public function all1($id_menu)
 	{
 		$menus = [];
@@ -125,6 +134,22 @@ class chitiet
 			$menus[] = $menu;
 		} return $menus;
 	} 
+	  //hien thi tung menu theo dich vu
+	  public function showmenu_DV($id_dv,$id_menu)
+	  {
+		  $menus = [];
+		  $stmt = $this->db->prepare('select * from menu m inner join menuchitiet ct on m.id_menu = ct.id_menu where m.id_dv = :id_dv and m.id_menu = :id_menu');
+		  $stmt->execute([
+			'id_dv' => $id_dv,
+			'id_menu' => $id_menu
+			]
+		);
+		  while ($row = $stmt->fetch()) {
+			  $menu = new chitiet($this->db);
+			  $menu->fillFromDB($row);
+			  $menus[] = $menu;
+		  } return $menus;
+	  } 
 
     // public function getMenu($id_mon) {
 	// 	$stmt = $this->db->prepare('select * from menu m inner join menuchitiet ct on m.id_menu = ct.id_menu where ct.id_mon = :id_mon');
@@ -145,6 +170,7 @@ class chitiet
 		$result = false;
 		if ($this->id >= 0) {
 			$stmt = $this->db->prepare('update menuchitiet set 
+			
             id_menu = :id_menu,
 			id_mon = :id_mon
 			where id = :id');
@@ -157,10 +183,11 @@ class chitiet
 			]);
 		} else {
 			$stmt = $this->db->prepare(
-				'insert into menuchitiet (id_menu,id_mon)
-			values (:id_menu, :id_mon)'
+				'insert into menuchitiet (id_dv,id_menu,id_mon)
+			values (:id_dv, :id_menu, :id_mon)'
 			);
 			$result = $stmt->execute([
+				'id_dv' => $this->id_dv,
                 'id_menu' => $this->id_menu,
 				'id_mon' => $this->id_mon
 				
@@ -192,11 +219,15 @@ class chitiet
 			return $this;
 		} return null;
 	}
-    //tim menu va mon trong menu
-    public function find2($id_menu,$id_mon)
+    //tim menu va mon trong menu cua 1 dv
+    public function find2($id_dv,$id_menu,$id_mon)
 	{
-		$stmt = $this->db->prepare('select * from menu m inner join menuchitiet ct on m.id_menu = ct.id_menu where m.id_menu = :id_menu and ct.id_mon = :id_mon');
-		$stmt->execute(['id_menu' => $id_menu,'id_mon' => $id_mon]);
+		$stmt = $this->db->prepare('select * from menu m inner join menuchitiet ct on m.id_menu = ct.id_menu where m.id_dv = :id_dv and m.id_menu = :id_menu and ct.id_mon = :id_mon');
+		$stmt->execute([
+			'id_dv' => $id_dv,
+			'id_menu' => $id_menu,
+			'id_mon' => $id_mon
+		]);
 		if ($row = $stmt->fetch()) {
 			$this->fillFromDB($row);
 			return $this;
@@ -252,10 +283,10 @@ class chitiet
 		return false;
 	}
 	public function insert_menu2() {
-		$sql = "insert into menuchitiet (id_menu,id_mon) values (:id_menu, :id_mon)";
+		$sql = "insert into menuchitiet (id_dv, id_menu,id_mon) values (:id_dv, :id_menu, :id_mon)";
     	$query = $this->db->prepare($sql);
     	$result = $query->execute([
-			
+			'id_dv' => $this-> id_dv,
         	'id_menu' => $this-> id_menu,
         	'id_mon' =>$this->id_mon
         	

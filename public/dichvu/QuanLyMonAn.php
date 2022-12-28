@@ -5,10 +5,13 @@ session_start();
 
 use CT466\Project\LoaiMon;
 use CT466\Project\MonAn;
+use CT466\Project\dichvu;
 
 $monan = new MonAn($PDO);
 $loaimon = new LoaiMon($PDO);
+$dichvu = new dichvu($PDO);
 
+$dichvus = $dichvu->all();
 $monans = $monan->all();
 $loaimons = $loaimon->all();
 
@@ -53,9 +56,20 @@ $id_loaimon = isset($_REQUEST['id_loaimon']) ?
                 </div>
             </div>
             <hr>
-          
+
 
             <form action="addmon.php" method="post" enctype="multipart/form-data" class="col-md-6 col-md-offset-3">
+            <div class="form-group<?= isset($errors['id_dv']) ? ' has-error' : '' ?>">
+                    <label for="id_dv">Dịch vụ(Lấy khi đăng nhập):</label>
+                    <select name="id_dv">
+                        <option hidden>--- Chọn dịch vụ --- </option>
+                        <?php foreach ($dichvus as $dichvu) :
+                            $dichvuID = $dichvu->getId(); ?>
+                            <option> <?php echo htmlspecialchars($dichvu->getId());
+                                        echo htmlspecialchars($dichvu->ten_dv) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
 
                 <div class="form-group<?= isset($errors['tenmon']) ? ' has-error' : '' ?>">
                     <label for="tenmon">Tên món:</label>

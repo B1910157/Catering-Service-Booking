@@ -7,6 +7,7 @@ class MonAn
 	private $db;
 
 	private $id_mon = -1;
+	public $id_dv;
 	public $id_loaimon; 
 	public $tenmon; 
 	public $gia_mon;
@@ -25,6 +26,9 @@ class MonAn
 
 	public function fill(array $data, $file)
 	{
+		if (isset($data['id_dv'])) {
+			$this->id_dv = trim($data['id_dv']);
+		}
 		if (isset($data['id_loaimon'])) {
 			$this->id_loaimon = trim($data['id_loaimon']);
 		}
@@ -51,6 +55,9 @@ class MonAn
 
 	public function validate()
 	{
+		if (!$this->id_dv) {
+			$this->errors['id_dv'] = 'Loai mon khong hop le.';
+		}
 		if (!$this->id_loaimon) {
 			$this->errors['id_loaimon'] = 'Loai mon khong hop le.';
 		}
@@ -76,6 +83,7 @@ class MonAn
 	{
 		[
 			'id_mon' => $this->id_mon,
+			'id_dv' => $this->id_dv,
 			'tenmon' => $this->tenmon,
 			'id_loaimon' => $this->id_loaimon,
 			'gia_mon' => $this->gia_mon,
@@ -91,6 +99,21 @@ class MonAn
 		$monans = [];
 		$stmt = $this->db->prepare('select * from monan');
 		$stmt->execute();
+		while ($row = $stmt->fetch()) {
+			$monan = new MonAn($this->db);
+			$monan->fillFromDB($row);
+			$monans[] = $monan;
+		}
+		return $monans;
+	}
+	//Hien thi tat ca mon an cua DV
+	public function all_DV($id_dv)
+	{
+		$monans = [];
+		$stmt = $this->db->prepare('select * from monan where id_dv = :id_dv');
+		$stmt->execute([
+			'id_dv'=>$id_dv
+		]);
 		while ($row = $stmt->fetch()) {
 			$monan = new MonAn($this->db);
 			$monan->fillFromDB($row);
@@ -120,10 +143,11 @@ class MonAn
 			move_uploaded_file($_FILES['image']['tmp_name'], 'C:/xampp/apps/NLN/public/img/upload/' . $imgname);
 		} else {
 			$stmt = $this->db->prepare(
-				'insert into monan (id_loaimon, tenmon, gia_mon, image)
-			values (:id_loaimon, :tenmon, :gia_mon, :image)'
+				'insert into monan (id_dv, id_loaimon, tenmon, gia_mon, image)
+			values (:id_dv, :id_loaimon, :tenmon, :gia_mon, :image)'
 			);
 			$result = $stmt->execute([
+				'id_dv' => $this->id_dv,
 				'id_loaimon' => $this->id_loaimon,
 				'tenmon' => $this->tenmon,
 				'gia_mon' => $this->gia_mon,
@@ -144,6 +168,19 @@ class MonAn
 	{
 		$stmt = $this->db->prepare('select * from monan where id_mon = :id_mon');
 		$stmt->execute(['id_mon' => $id_mon]);
+		if ($row = $stmt->fetch()) {
+			$this->fillFromDB($row);
+			return $this;
+		} else return null;
+	}
+	//Tim mon an cua 1 dich vu
+	public function findMonDV($id_dv)
+	{
+		$stmt = $this->db->prepare('select * from monan where id_dv =:id_dv ');
+		$stmt->execute([
+			'id_dv' => $id_dv
+			
+		]);
 		if ($row = $stmt->fetch()) {
 			$this->fillFromDB($row);
 			return $this;

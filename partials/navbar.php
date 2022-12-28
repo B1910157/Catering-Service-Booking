@@ -58,17 +58,19 @@
 
 		$user = new User($PDO);
 		if (isset($_GET['dangxuat']) && $_GET['dangxuat'] == 1) {
-			unset($_SESSION['id_user']);
+			unset($_SESSION['id_dv']);
+			// echo '<script>alert("Đăng xuất thành công.");</script>';
+			echo '<script>window.location.href= "../index.php";</script>';
 		}
-		if (isset($_SESSION['id_user'])) {
-			$username = $_SESSION['id_user'];
-			$userData = $user->find($username);
+		if (isset($_SESSION['id_dv'])) {
+			$username = $_SESSION['id_dv'];
+			$userData = $dichvu->find($username);
 		?>
 
 			<ul class="navbar-nav">
 
 				<li class="nav-item">
-					<i style="color: red;"><?php echo "Xin chào, " . $userData->fullname; ?></i>
+					<i style="color: red;"><?php echo "Xin chào, " . $userData->ten_dv; ?></i>
 					<a class="nav-link" href="index.php?dangxuat=1">Đăng xuất</a>
 				</li>
 			</ul>

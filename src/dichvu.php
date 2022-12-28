@@ -178,7 +178,15 @@ class dichvu
         }
         return null;
     }
-
+    public function findDV($id_dv)
+	{
+		$stmt = $this->db->prepare('select * from dattiec m inner join dichvu ct on m.id_dv = ct.id_dv where m.id_dv = :id_dv');
+		$stmt->execute(['id_dv' => $id_dv]);
+		if ($row = $stmt->fetch()) {
+			$this->fillFromDB($row);
+			return $this;
+		} return null;
+	}
     //Tim kiem email, kiem tra neu co ton tai email trong csdl thi thông bao 
     // da ton tai va yeu cau chon 1 username khac de dang nhap
     public function findEmail($e)

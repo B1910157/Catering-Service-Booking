@@ -13,38 +13,40 @@ $chitiet = new chitiet($PDO);
 
 $errors = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // echo '<pre>';
+	// echo '<pre>';
 	// print_r($_POST);
-    $id_mon = $_POST['id'];
+	$id_mon = $_POST['id'];
 	$id_menu = $_POST['idmenu'];
 
 
-	$kq = $chitiet->find2($id_menu, $id_mon);
-	
-	$findmenu = $chitiet->findMenu($id_menu);
 
-	echo $chitiet->getId();
-	$id = $chitiet->getId();
+	if (isset($_SESSION['id_dv'])) {
+		$id_dv =$_SESSION['id_dv'];
 
-	// }
-	if(($kq)){
-		// echo "Món này đã có trong menu!!!";
-		echo '<script>alert("Món này đã có trong menu. Vui lòng chọn món khác!!! "); javascript:history.go(-1)</script>';
-	}else{
-		// echo "thêm thành công";
+		$kq = $chitiet->find2($id_dv, $id_menu, $id_mon);
 
-		$array1 = [];
-		$array1['id_menu'] = $id_menu;
-		$array1['id_mon'] = $id_mon;
-		$chitiet->insert_menu($array1); 
-		echo '<script>alert("Thêm món vào menu thành công."); javascript:history.go(-1)</script>';
-		// echo "<pre>";
-		// print_r($array1);
+		$findmenu = $chitiet->findMenu($id_menu);
+
+		echo $chitiet->getId();
+		$id = $chitiet->getId();
+
+		// }
+		if (($kq)) {
+			// echo "Món này đã có trong menu!!!";
+			echo '<script>alert("Món này đã có trong menu của bạn. Vui lòng chọn món khác!!! "); javascript:history.go(-1)</script>';
+		} else {
+			// echo "thêm thành công";
+			{
+				$array1 = [];
+				$array1['id_dv'] = $_SESSION['id_dv'];
+				$array1['id_menu'] = $id_menu;
+				$array1['id_mon'] = $id_mon;
+				$chitiet->insert_menu($array1);
+				echo '<script>alert("Thêm món vào menu thành công."); javascript:history.go(-1)</script>';
+				// echo "<pre>";
+				// print_r($array1);
+
+			}
+		}
 	}
-	
-	
-	
-	
-	
 }
-?>

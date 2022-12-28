@@ -194,6 +194,32 @@ class dattiec
 		return $dattiecs;
 	}
 
+	//Hien thi tat ca menu
+	public function all_DV($id_dv)
+	{
+		$dattiecs = [];
+		$stmt = $this->db->prepare('select * from dattiec where id_dv = :id_dv');
+		$stmt->execute([
+			'id_dv'=>$id_dv
+		]);
+		while ($row = $stmt->fetch()) {
+			$dattiec = new dattiec($this->db);
+			$dattiec->fillFromDB($row);
+			$dattiecs[] = $dattiec;
+		}
+		return $dattiecs;
+	}
+
+	public function findDV($id_dv)
+	{
+		$stmt = $this->db->prepare('select * from dattiec m inner join dichvu ct on m.id_dv = ct.id_dv where m.id_dv = :id_dv');
+		$stmt->execute(['id_dv' => $id_dv]);
+		if ($row = $stmt->fetch()) {
+			$this->fillFromDB($row);
+			return $this;
+		} return null;
+	}
+
 
 
 

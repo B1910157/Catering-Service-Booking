@@ -6,17 +6,43 @@ use CT466\Project\LoaiMon;
 use CT466\Project\MonAn;
 use CT466\Project\loaitiec;
 use CT466\Project\dichvu;
+use CT466\Project\dattiec;
+use CT466\Project\user;
+use CT466\Project\menu;
 
+$user = new user($PDO);
 $monan = new MonAn($PDO);
 $loaimon = new LoaiMon($PDO);
 $loaitiec = new loaitiec($PDO);
 $dichvu = new dichvu($PDO);
+$dattiec = new dattiec($PDO);
+$menu = new menu($PDO);
+
+
+$users = $user->all();
+$dichvus = $dichvu->all();
+
 $monans = $monan->all();
 $loaimons = $loaimon->all();
 $loaitiecs = $loaitiec->all();
 
-$id_loaitiec = isset($_REQUEST['id_loaitiec']) ?
-    filter_var($_REQUEST['id_loaitiec'], FILTER_SANITIZE_NUMBER_INT) : -1;
+if (isset($_SESSION['id_dv'])) {
+    $id_dv = $_SESSION['id_dv'];
+    $dattiecs = $dattiec->all();
+    $dichvuLogin = $dichvu->find($id_dv);
+    $menus = $menu->allmenu_DV($id_dv);
+} else {
+    echo '<script>alert("Bạn chưa đăng nhập!!!!!.");</script>';
+    echo '<script>window.location.href= "loginDV.php";</script>';
+}
+
+// echo "<pre>";
+// print_r($dichvuLogin);
+
+
+// print_r($dattiec->all_DV($id_dv));
+// print_r($users);
+// print_r($menus);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -50,188 +76,122 @@ $id_loaitiec = isset($_REQUEST['id_loaitiec']) ?
         <section id="inner" class="inner-section section">
             <!-- SECTION HEADING -->
             <hr>
-            <h2 class="section-heading text-center wow fadeIn title" data-wow-duration="1s"><?php echo "Tên tiệc lưu động"  ?></h2>
+            <h2 class="section-heading text-center wow fadeIn title" data-wow-duration="1s"><?php echo $dichvuLogin->ten_dv;  ?></h2>
             <div class="row">
                 <div class="col-12 text-center">
-                    <p class="wow fadeIn note" data-wow-duration="2s">Tận tình chu đáo</p>
+                    <p class="wow fadeIn note" data-wow-duration="2s">SDT: <?php echo $dichvuLogin->sdt;  ?></p>
                 </div>
             </div>
             <hr>
             <div class="inner-wrapper row">
-                <div class="list-group m-3 col-md-2">
-                    <p class="list-group-item bg-primary">DANH MỤC</p>
-                    <?php foreach ($loaimons as $loaimon) :
-                        $loaiID = $loaimon->getId(); ?>
-                        <a class="list-group-item list-group-item-action" href="monan.php?id_loaimon=<?php echo $loaiID; ?>">
-                            <?php htmlspecialchars($loaimon->getId());
-                            echo htmlspecialchars($loaimon->tenloaimon) ?>
-                        </a>
-                    <?php endforeach; ?>
-                </div>
-
-                <div class="col-md-9 card-container">
-                    <form id="dichvu" action="themdv.php" method="post" enctype="multipart/form-data">
-
-                        <div class="form-group">
-                            <label for="id_dv">Chọn dịch vụ</label>
-                            <select require name="id_dv" id="id_dv" class="custom-select">
-                                <option value="">--Chọn--</option>
-                                <option >1</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="id_menu">Chọn menu</label>
-                            <select require name="id_menu" id="id_menu" class="custom-select">
-                                <option value="">--Chọn--</option>
-                                <option >9</option>
-                            </select>
-                        </div>
 
 
+                <div class="col-md-12 card-container">
+                    <h2>Đơn đặt tiệc</h2>
+                    <table id="sp" class="border text-center table-responsive table-striped">
+                        <thead>
+                            <tr class="border">
+                                <th>STT</th>
+                                <th>Loại tiệc</th>
+                                <th>Khách hàng </th>
+                                <th>Menu</th>
+                                <th>Gía menu</th>
+                                <th>Số lượng bàn</th>
+                                <th>giờ đặt</th>
+                                <th>ngày diễn ra tiệc</th>
+                                <th>Tổng tiền</th>
+                                <th>Tỉnh/Thành Phố</th>
+                                <th>Quận/Huyện</th>
+                                <th>Phường/Xã</th>
+                                <th>Địa chỉ diễn ra tiệc</th>
+                                <th>Ngày khách hàng đặt</th>
+                                <th>Trạng thái</th>
+                                <th>Tùy chọn</th>
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            <?php
+                            $i = 0;
+                            $dattiec->getId();
+                            $dattiec1 = $dattiec->findDV($id_dv);
+                            $dattiecs = $dattiec->all_DV($id_dv);
+                            foreach ($dattiecs as $dattiec1) :
+                                $dattiecID = $dattiec1->getId();
+                                $i++;
+                            ?>
+                                <tr class="border">
+                                    <td class="border"><?php echo $i ?></td>
+                                    <td class="border"><?php
+                                                        $tenloaitiec =  $loaitiec->find($dattiec1->id_loaitiec);
+                                                        echo $tenloaitiec->ten_loai;
+                                                        ?>
+                                    </td>
+
+                                    <td class="border"><?php
+                                                        $tenkhachhang =  $user->find($dattiec1->id_user);
+                                                        echo $tenkhachhang->fullname;
+
+                                                        ?></td>
+                                    <td class="border"><?php
+                                                        $tenmenu =  $menu->findMenu($dattiec1->id_menu);
+                                                        echo $tenmenu->tenmenu;
+
+                                                        ?></td>
+                                    <td class="border"><?php
+                                                        echo "Gía menu nhớ làm nhe"
 
 
-                        <div class="form-group<?= isset($errors['id_loaitiec']) ? ' has-error' : '' ?>">
-                            <label for="id_loaitiec">Loại tiệc:</label>
+                                                        ?></td>
 
-                            <select require name="id_loaitiec" id="id_loaitiec" class="custom-select">
-                                <option value="">--Chọn--</option>
-                                <!-- <option value="">--- Chọn loại tiệc --- </option> -->
-                                <?php foreach ($loaitiecs as $loaitiec) :
+                                    <td class="border"><?php
 
-                                    $loaitiecID = $loaitiec->getId(); ?>
+                                                        echo $dattiec1->soluongban;
 
-                                    <option>
-                                        <?php
-                                        echo  $loaitiec->getId();;
-                                        echo htmlspecialchars($loaitiec->ten_loai) ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
+                                                        ?></td>
+                                    <td class="border"><?php
+                                                        echo $dattiec1->giodat;
 
-                        <div class="form-group<?= isset($errors['soluongban']) ? ' has-error' : '' ?>">
-                            <label for="soluongban">Số lượng bàn:</label>
-                            <input require type="text" name="soluongban" class="form-control" id="soluongban" placeholder="nhập số lượng bàn" value="<?= isset($_POST['soluongban']) ? htmlspecialchars($_POST['soluongban']) : '' ?>" />
-
-                            <?php if (isset($errors['soluongban'])) : ?>
-                                <span class="help-block">
-                                    <strong><?= htmlspecialchars($errors['soluongban']) ?></strong>
-                                </span>
-                            <?php endif ?>
-                        </div>
-                        <div class="form-group<?= isset($errors['giodat']) ? ' has-error' : '' ?>">
-                            <label for="giodat">Giờ bắt đầu:</label>
-                            <input require type="time" name="giodat" class="form-control" id="giodat" placeholder="nhập số lượng bàn" value="<?= isset($_POST['giodat']) ? htmlspecialchars($_POST['giodat']) : '' ?>" />
-
-                            <?php if (isset($errors['giodat'])) : ?>
-                                <span class="help-block">
-                                    <strong><?= htmlspecialchars($errors['giodat']) ?></strong>
-                                </span>
-                            <?php endif ?>
-                        </div>
-                        <div class="form-group<?= isset($errors['ngaydat']) ? ' has-error' : '' ?>">
-                            <label for="ngaydat">Ngày diễn ra:</label>
-                            <input require type="date" name="ngaydat" class="form-control" id="ngaydat" value="<?= isset($_POST['ngaydat']) ? htmlspecialchars($_POST['ngaydat']) : '' ?>" />
-
-                            <?php if (isset($errors['ngaydat'])) : ?>
-                                <span class="help-block">
-                                    <strong><?= htmlspecialchars($errors['ngaydat']) ?></strong>
-                                </span>
-                            <?php endif ?>
-                        </div>
-
-
-                        <div class="form-group">
-                            <label for="tinh">Tỉnh/ Thành phố</label>
-                            <select require name="tinh" id="tinh" class="custom-select">
-                                <option value="">--Chọn--</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="quan">Quận/ Huyện</label>
-                            <select require name="quan" id="quan" class="custom-select">
-                                <option value="">--Chọn--</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="phuong">Phường/ Xã</label>
-                            <select require name="phuong" id="phuong" class="custom-select">
-                                <option value="">--Chọn--</option>
-                            </select>
-                        </div>
-                        <div class="form-group<?= isset($errors['diachitiec']) ? ' has-error' : '' ?>">
-                            <label for="diachitiec">Địa chỉ:</label>
-                            <input require type="text" name="diachitiec" class="form-control" id="diachitiec" placeholder="Địa chỉ" value="<?= isset($_POST['diachitiec']) ? htmlspecialchars($_POST['diachitiec']) : '' ?>" />
-
-                            <?php if (isset($errors['diachitiec'])) : ?>
-                                <span class="help-block">
-                                    <strong><?= htmlspecialchars($errors['diachitiec']) ?></strong>
-                                </span>
-                            <?php endif ?>
-                        </div>
-
-
-                        <!-- <input hidden type="text" name="id_menu" value="">
-                        <input hidden type="text" name="id_user" value=""> -->
-
-
-                        <button type="submit" name="submit" id="submit" class="btn btn-primary">Đặt tiệc</button>
-
-                        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-                        <script type="text/javascript" src="../jquery.validate.js"></script>
-
-                        <script type="text/javascript">
-                            $(document).ready(function() {
-                                $("#dichvu").validate({
-                                    rules: {
-                                        id_dv: "required",
-                                        id_menu: "required",
-                                        id_loaitiec: "required",
-
-                                        soluongban: "required",
-                                        giodat: "required",
-                                        ngaydat: "required",
-                                        tinh: "required",
-                                        quan: "required",
-                                        phuong: "required",
-                                        diachitiec: "required"
-                                    },
-
-                                    messages: {
-                                        id_dv: "Chọn Dịch vụ",
-                                        id_menu: "Chọn Menu",
-                                        id_loaitiec: "Chọn loại tiệc",
-                                        soluongban: "Nhập số lượng bàn",
-                                        giodat: "Chọn giờ đặt",
-                                        ngaydat: "Chọn ngày đặt",
-                                        tinh: "Chọn Tỉnh/Thành Phố ",
-                                        quan: "Chọn Quận/Huyện thành",
-                                        phuong: "Chọn Phường/Xã",
-                                        diachitiec: "Vui lòng nhập địa chỉ"
+                                                        ?></td>
+                                    <td class="border"><?php
+                                                        echo $dattiec1->ngaydat;
+                                                        ?></td>
+                                    <td class="border"><?php
+                                                        echo "tổng tiền nhớ làm";
+                                                        ?></td>
+                                    <td class="border"><?php
+                                                        echo $dattiec1->tinh;
+                                                        ?></td>
+                                    <td class="border"><?php echo $dattiec1->quan; ?></td>
+                                    <td class="border"><?php echo $dattiec1->phuong; ?></td>
+                                    <td class="border"><?php echo $dattiec1->diachitiec; ?></td>
+                                    <td class="border"><?php echo $dattiec1->ngaythuchien; ?></td>
+                                    <td class="border"><?php
+                                                        if (($dattiec1->trangthai) == 0) {
+                                                            echo "Đơn đặt tiệc mới";
+                                                        } elseif (($dattiec1->trangthai) == 1) {
+                                                            echo "Đã duyệt! ";
+                                                        } elseif (($dattiec1->trangthai) == 2) {
+                                                            echo "Đã hủy đơn";
+                                                        }
 
 
 
-                                    },
-                                    errorElement: "div",
-                                    errorPlacement: function(error, element) {
-                                        error.addClass("invalid-feedback");
-                                        if (element.prop("type") === "checkbox") {
-                                            error.insertAfter(element.siblings("label"));
-                                        } else {
-                                            error.insertAfter(element);
-                                        }
-                                    },
-                                    highlight: function(element, errorClass, validClass) {
-                                        $(element).addClass("is-invalid").removeClass("is-valid");
-                                    },
-                                    unhighlight: function(element, errorClass, validClass) {
-                                        $(element).addClass("is-valid").removeClass("is-invalid");
-                                    }
-                                });
-                            });
-                        </script>
 
-                    </form>
+                                                        ?></td>
+                                    <td class="border">
+                                        <a class="btn btn-primary" href="">Duyệt</a>
+                                        <a class="btn btn-danger" href="">Hủy</a>
+
+                                    </td>
+
+                                </tr>
+                            <?php
+                            endforeach;
+                            ?>
+                        </tbody>
+                    </table>
+
                 </div>
 
 
