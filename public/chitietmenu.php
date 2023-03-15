@@ -7,11 +7,14 @@ require_once __DIR__ . "/../bootstrap.php";
 use CT466\Project\Menu;
 use CT466\Project\LoaiMon;
 use CT466\Project\MonAn;
+use CT466\Project\chitiet;
 
 
 $loaimon = new LoaiMon($PDO);
 $menu = new Menu($PDO);
 $monan = new MonAn($PDO);
+$chitiet = new chitiet($PDO);
+
 $monans = $monan->all();
 $loaimons = $loaimon->all();
 
@@ -20,10 +23,9 @@ $loaimons = $loaimon->all();
 
 $id = isset($_REQUEST['id']) ?
     filter_var($_REQUEST['id'], FILTER_SANITIZE_NUMBER_INT) : -1;
-if ($id < 0 || !($menu->findMenu($id))) {
-    redirect(BASE_URL_PATH);
-}
-$menus = $menu->showmenu($id);
+
+
+$chitiets = $chitiet->showmenu($id);
 
 
 ?>
@@ -62,18 +64,38 @@ $menus = $menu->showmenu($id);
             </tr>
             <tr>
                 <th>STT</th>
-                <th>Tên Sản Phẩm</th>
+                <th>Tên Món ăn</th>
                 <th>Hình ảnh</th>
 
                 <th>Giá</th>
-                <th>Tổng tiền</th>
+                
                 <th width="15%"></th>
             </tr>
         </thead>
         <tbody>
+
+            <?php
+            $tongtien = 0;
+            if ($id < 0 || !($chitiet->findMenu($id))) {
+            ?>
+                <tr>
+                    <td colspan="5">
+                        <?php
+                        echo "Menu trống";
+                        // redirect(BASE_URL_PATH); 
+                        ?>
+                    </td>
+                </tr>
+            <?php
+            }
+            ?>
             <?php
             $n = 1;
-            foreach ($menus as $menu) : {
+            // echo "<pre>";
+            // print_r($chitiet);
+            // echo "lhlhlhl";
+            // print_r($chitiets);
+            foreach ($chitiets as $chitiet) : {
                     // code...
                     // $id = $menu->getId();
             ?>
@@ -81,35 +103,39 @@ $menus = $menu->showmenu($id);
                     <tr>
 
                         <td><?php echo $n;
-                            $n++; ?></td>
-                        <td><?php $idmonn =  $monan->find($menu->id_mon);
+                            $n++; ?>
+                        </td>
+                        <td><?php $idmonn =  $monan->find($chitiet->id_mon);
                             echo $idmonn->tenmon; ?></td>
 
                         <td>
-                            <img class="w-25 h-25" src="img/upload/<?php $idmonn =  $monan->find($menu->id_mon);
-                                                                    echo $idmonn->image; ?>">
+                            <img class="w-25 h-25" src="../img/upload/<?php $idmonn =  $monan->find($chitiet->id_mon);
+                                                                        echo $idmonn->image; ?>">
                         </td>
                         <td> <?php
 
-                                $idmonn =  $monan->find($menu->id_mon);
+                                $idmonn =  $monan->find($chitiet->id_mon);
+                                $gia = $idmonn->gia_mon;
+                                $tongtien = $tongtien+$gia;
 
                                 echo number_format($idmonn->gia_mon, 0, '', '.'); ?><sup> vnđ</sup></td>
-
-                        <td><?php echo '00000'; ?><sup> vnđ</sup></td>
                         <td>
 
-                            <a class="btn btn-danger" href="delete_cart.php?menu_id=<?php echo $menu->getId(); ?>&mon_id=<?php echo $menu->id_mon; ?>">Xóa</a>
+
                         </td>
                         </form>
                     </tr>
-                    <tr>
-                        <a href="chitietmenu.php?id=<?php echo $id; ?>">chi tiet <?php echo $id; ?></a>
-                    </tr>
+                  
 
             <?php }
             endforeach ?>
 
         </tbody>
+        <tr>
+            <td width="20%">
+                tổng tiền: <i class="text-danger"><?php echo $tongtien?></i> VNĐ
+            </td>
+        </tr>
     </table>
 
 </body>

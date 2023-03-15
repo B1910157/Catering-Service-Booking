@@ -36,12 +36,14 @@ $dichvus = $dichvu->all();
     <link href="<?= BASE_URL_PATH . "css/animate.css" ?>" rel=" stylesheet">
     <link href="<?= BASE_URL_PATH . "css/style.css" ?>" rel=" stylesheet">
     <script src="../js/validate_area.js"></script>
+   
 
 
 </head>
 
 <body>
     <!-- Main Page Content -->
+    <?php include "../../partials/nav_admin.php"; ?>
     <div class="container">
         <?php
         //  include('../../partials/nav_admin.php');
@@ -49,7 +51,7 @@ $dichvus = $dichvu->all();
         <section id="inner" class="inner-section section">
             <!-- SECTION HEADING -->
             <hr>
-            <h2 class="section-heading text-center wow fadeIn title" data-wow-duration="1s">QUẢN LÝ ĐẶT TIỆC</h2>
+            <h2 class="section-heading text-center wow fadeIn title" data-wow-duration="1s">QUẢN LÝ ĐẶT TIỆC TRỰC TUYẾN</h2>
             <div class="row">
                 <div class="col-12 text-center">
                     <p class="wow fadeIn note" data-wow-duration="2s">Tận tình chu đáo </p>
@@ -74,7 +76,7 @@ $dichvus = $dichvu->all();
                         echo $user->countUser();
                         ?>
                     </a>
-                    <a href="qly_TV.php" class="col-4 btn btn-outline-success p-3" style="height: 150px;">
+                    <a href="" class="col-4 btn btn-outline-success p-3" style="height: 150px;">
                         Tổng số lượt đặt tiệc <br>
                         <?php
                         echo $dattiec->count_tongLuot();
@@ -84,26 +86,7 @@ $dichvus = $dichvu->all();
 
                 </div>
             </div>
-            <form id="dichvu" action="themdv.php" method="post" enctype="multipart/form-data">
-
-                <div class="form-group">
-                    <label for="id_dv">Chọn dịch vụ</label>
-                    <select require name="id_dv" id="id_dv" class="custom-select">
-                        <option value="">--Chọn--</option>
-                        <?php foreach ($dichvus as $dichvu) :
-
-                            $dichvuID = $dichvu->getId(); ?>
-
-                            <option>
-                                <?php
-                                echo  $dichvu->getId();
-                                echo htmlspecialchars($dichvu->ten_dv) ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-
-                </div>
-            </form>
+           
         </section>
         <?php include('../../partials/footer.php'); ?>
     </div>

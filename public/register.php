@@ -7,69 +7,90 @@ use CT466\Project\User;
 
 $user = new User($PDO);
 
+use CT466\Project\LoaiMon;
+use CT466\Project\MonAn;
+use CT466\Project\loaitiec;
+use CT466\Project\dichvu;
+use CT466\Project\Menu;
+
+
+$monan = new MonAn($PDO);
+$loaimon = new LoaiMon($PDO);
+$loaitiec = new loaitiec($PDO);
+$menu = new Menu($PDO);
+$dichvu = new dichvu($PDO);
+
+$menus = $menu->allmenu();
+$monans = $monan->all();
+
+$dichvus = $dichvu->allDuyet();
+$loaimons = $loaimon->all();
+$loaitiecs = $loaitiec->all();
+
+$id_loaitiec = isset($_REQUEST['id_loaitiec']) ?
+    filter_var($_REQUEST['id_loaitiec'], FILTER_SANITIZE_NUMBER_INT) : -1;
+
 $errors = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $array = [];
     $array['fullname'] = $_POST['fullname'];
-	$array['username'] = $_POST['username'];
-    
-    
+    $array['username'] = $_POST['username'];
+
+
 
     $array['password'] = $_POST['password'];
-	
+
     $array['diachi'] = $_POST['diachi'];
     $array['phuong'] = $_POST['phuong'];
     $array['quan'] = $_POST['quan'];
     $array['tinh'] = $_POST['tinh'];
 
     $array['sdt'] = $_POST['sdt'];
-	$array['email'] = $_POST['email'];
-    
+    $array['email'] = $_POST['email'];
+
     echo "<pre>";
     print_r($user->fill($array));
-    
-   
+
+
     // print_r($a);
 
     if ($user->validate()) {
         $user->save();
         echo '<script>alert("Đăng ký thành viên thành công!.");</script>';
         echo '<script>window.location.href= "loginTV.php";</script>';
-    }else{
+    } else {
         echo '<script>alert("Đăng ký không thành công!!.");</script>';
     }
     $errors = $user->getValidationErrors();
     if (isset($errors['username'])) {
         echo '<script>alert("username hợp lệ."); javascript:history.go(-1)</script>';
-        
     }
     if (isset($errors['diachi'])) {
         echo '<script>alert("dia chi không hợp lệ."); javascript:history.go(-1)</script>';
-        
     }
 
     // if (isset($errors['id_user'])) {
     //     echo '<script>alert("loại tiệc không hợp lệ."); javascript:history.go(-1)</script>';
-        
+
     // }
     // if (isset($errors['id_menu'])) {
     //     echo '<script>alert("loại tiệc không hợp lệ."); javascript:history.go(-1)</script>';
-        
+
     // }
 
     // if (isset($errors['soluongban'])) {
     //     echo '<script>alert("số lượng bàn lớn hơn 10."); javascript:history.go(-1)</script>';
-        
+
     // }
-    
+
     // if (isset($errors['giodat'])) {
     //     echo '<script>alert("Giờ đặt tiệc không hợp lệ."); javascript:history.go(-1)</script>';
-        
+
     // }
     // if (isset($errors['ngaydat'])) {
     //     echo '<script>alert("Ngày đặt tiệc không hợp lệ."); javascript:history.go(-1)</script>';
-        
+
     // }
 }
 
@@ -167,7 +188,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                             <button type="submit" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Đăng ký</button>
                                         </div>
 
-                                        <p class="text-center text-muted mt-5 mb-0">Bạn đã có tài khoản? <a href="login.php" class="fw-bold text-body"><u>Đăng nhập</u></a></p>
+                                        <p class="text-center text-muted mt-5 mb-0">Bạn đã có tài khoản? <a href="loginTV.php" class="fw-bold text-body"><u>Đăng nhập</u></a></p>
                                         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
                                         <script type="text/javascript" src="./js/jquery.validate.js"></script>
 
@@ -258,7 +279,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <hr>
         <?php include('../partials/footer.php'); ?>
     </div>
-   
+
     <script src="<?= BASE_URL_PATH . "js/wow.min.js" ?>"></script>
 
 

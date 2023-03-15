@@ -8,15 +8,24 @@ require_once __DIR__ . "/../bootstrap.php";
 use CT466\Project\dattiec;
 use CT466\Project\chitiet;
 use CT466\Project\loaitiec;
+use CT466\Project\User;
 
 $errors = [];
 $dattiec = new dattiec($PDO);
 $chitiet = new chitiet($PDO);
 $loaitiec = new loaitiec($PDO);
+$loaitiec = new User($PDO);
 
 $loaitiecs = $loaitiec->all();
 $findMenu = $chitiet->findMenu(7);
 
+if(isset($_SESSION['id_user'])){
+    $id_user = $_SESSION['id_user'];
+    echo $id_user;
+}else{
+    echo '<script>alert("Bạn cần đăng nhập trước khi đặt tiệc.");</script>';
+    echo '<script>window.location.href= "loginTV.php";</script>';
+}
 // echo "<pre>";
 // print_r($_POST);
 // print_r($dattiec->fill($_POST));
@@ -26,14 +35,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $array = [];
     $array['id_dv'] = $_POST['id_dv'];
     $array['id_loaitiec'] = $_POST['id_loaitiec'];
-    $array['id_user'] = 1;
+    $array['id_user'] = $id_user;
     $array['id_menu'] = $_POST['id_menu'];
 
     $array['soluongban'] = $_POST['soluongban'];
     $array['giodat'] = $_POST['giodat'];
     $array['ngaydat'] = $_POST['ngaydat'];
-    $array['giamenu'] = 100;
-    $array['tongtien'] = 100 * $_POST['soluongban'];
+    $array['giamenu'] = $_POST['gia_menu'];
+    $array['tongtien'] = $_POST['gia_menu'] * $_POST['soluongban'];
     $array['diachitiec'] = $_POST['diachitiec'];
     $array['phuong'] = $_POST['phuong'];
     $array['quan'] = $_POST['quan'];
@@ -48,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($dattiec->validate()) {
         $dattiec->save();
         echo '<script>alert("Đặt tiệc thành công! Chờ duyệt!.");</script>';
-        echo '<script>window.location.href= "index.php";</script>';
+        echo '<script>window.location.href= "lichSu.php";</script>';
     }else{
         echo '<script>alert("Đặt tiệc không thành công!!.");</script>';
     }

@@ -5,10 +5,12 @@ session_start();
 use CT466\Project\LoaiMon;
 use CT466\Project\MonAn;
 use CT466\Project\Menu;
+use CT466\Project\dichvu;
 
 $monan = new MonAn($PDO);
 $loaimon = new LoaiMon($PDO);
 $menu = new Menu($PDO);
+$dichvu = new dichvu($PDO);
 
 $monans = $monan->all();
 $loaimons = $loaimon->all();
@@ -95,6 +97,8 @@ $id_menu = isset($_REQUEST['id_menu']) ?
                     foreach ($menus as $menu) : {
                             // code...
                             $id_menu = $menu->getId();
+                            echo $menu->tenmenu;
+                            echo '\n';
                     ?>
 
                             <tr>
@@ -102,7 +106,9 @@ $id_menu = isset($_REQUEST['id_menu']) ?
                                 <td><?php echo $n;
                                     $n++; ?></td>
                                 <td><?php $idmonn =  $monan->find($menu->id_mon);
-                                    echo $idmonn->tenmon; ?></td>
+                                    echo $idmonn->tenmon;
+                                    
+                                     ?></td>
 
                                 <td>
                                     <img class="w-25 h-25" src="img/upload/<?php $idmonn =  $monan->find($menu->id_mon);

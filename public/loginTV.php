@@ -1,14 +1,33 @@
 <?php
 include "../bootstrap.php";
 
-use CT275\Project\User;
-use CT275\Project\Category;
-$category = new Category($PDO);
-$categorys = $category->all();
-$user = new User($PDO);
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-}
+use CT466\Project\User;
 
+
+$user = new User($PDO);
+
+use CT466\Project\LoaiMon;
+use CT466\Project\MonAn;
+use CT466\Project\loaitiec;
+use CT466\Project\dichvu;
+use CT466\Project\Menu;
+
+
+$monan = new MonAn($PDO);
+$loaimon = new LoaiMon($PDO);
+$loaitiec = new loaitiec($PDO);
+$menu = new Menu($PDO);
+$dichvu = new dichvu($PDO);
+
+$menus = $menu->allmenu();
+$monans = $monan->all();
+
+$dichvus = $dichvu->allDuyet();
+$loaimons = $loaimon->all();
+$loaitiecs = $loaitiec->all();
+
+$id_loaitiec = isset($_REQUEST['id_loaitiec']) ?
+    filter_var($_REQUEST['id_loaitiec'], FILTER_SANITIZE_NUMBER_INT) : -1;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -17,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Shop Máy Ảnh</title>
+    <title>Tiệc Lưu Động</title>
     <!-- 
 	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"> -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
@@ -40,12 +59,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ?>
         <hr>
         <div id="login">
-            <div  class="bg-image container p-2" style="background-image: url('img/bg.jpeg');">
+            <div  class="bg-image container p-2">
                 <div id="login-row" class="row justify-content-center align-items-center">
                     <div id="login-column" class="col-md-6">
                         <div id="login-box" class="col-md-12">
-                            <form id="login-form" class="form" action="process_login.php" method="post">
-                                <h3 class="text-center title">ĐĂNG NHẬP</h3>
+                            <form id="login-form" class="form" action="processLoginTV.php" method="post">
+                                <h3 class="text-center title">ĐĂNG NHẬP NGƯỜI DÙNG</h3>
                                 <div class="form-group">
                                     <label for="username" class="text-info">Tên đăng nhập:</label><br>
                                     <input type="text" name="username" id="username" class="form-control" >

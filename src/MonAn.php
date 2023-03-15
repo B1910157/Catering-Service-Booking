@@ -140,7 +140,7 @@ class MonAn
 				'id_mon' => $this->id_mon
 			]);
 			$imgname = $this->image;
-			move_uploaded_file($_FILES['image']['tmp_name'], 'C:/xampp/apps/NLN/public/img/upload/' . $imgname);
+			move_uploaded_file($_FILES['image']['tmp_name'], 'C:/xampp/apps/qldt/public/img/upload/' . $imgname);
 		} else {
 			$stmt = $this->db->prepare(
 				'insert into monan (id_dv, id_loaimon, tenmon, gia_mon, image)
@@ -158,7 +158,7 @@ class MonAn
 				$this->id_mon = $this->db->lastInsertId();
 			}
 			$imgname = $this->image;
-			move_uploaded_file($_FILES['image']['tmp_name'], 'C:/xampp/apps/NLN/public/img/upload/' . $imgname);
+			move_uploaded_file($_FILES['image']['tmp_name'], 'C:/xampp/apps/qldt/public/img/upload/' . $imgname);
 		}
 		return $result;
 	}
@@ -173,8 +173,8 @@ class MonAn
 			return $this;
 		} else return null;
 	}
-	//Tim mon an cua 1 dich vu
-	public function findMonDV($id_dv)
+	
+	public function findMonDV1($id_dv)
 	{
 		$stmt = $this->db->prepare('select * from monan where id_dv =:id_dv ');
 		$stmt->execute([
@@ -185,6 +185,21 @@ class MonAn
 			$this->fillFromDB($row);
 			return $this;
 		} else return null;
+	}
+	//Tim mon an cua 1 dv
+	public function findMonDV($id_dv)
+	{
+		$monans = [];
+		$stmt = $this->db->prepare('select * from monan where id_dv =:id_dv');
+		$stmt->execute([
+			'id_dv' =>$id_dv
+		]);
+		while ($row = $stmt->fetch()) {
+			$monan = new MonAn($this->db);
+			$monan->fillFromDB($row);
+			$monans[] = $monan;
+		}
+		return $monans;
 	}
 
 

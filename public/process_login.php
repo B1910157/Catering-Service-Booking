@@ -1,48 +1,42 @@
 <?php
+include "../bootstrap.php";
+
 session_start();
-include "C:/xampp/apps/project/bootstrap.php";
-require_once 'C:/xampp/apps/project/bootstrap.php';
+
 // $_SESSION['id_user'] = '';
-use CT275\Project\User;
+use CT466\Project\dichvu;
 
 $errors = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $user = new User($PDO);
-    $username = $_POST['username'];
+    $dichvu = new dichvu($PDO);
+    $email = $_POST['email'];
     $password = $_POST['password'];
     //row tra ve so dong có username va password giong voi U P nguoi dung nhap vao 
-    $row = $user->checkpoint($username,$password);
-    //result tra ve mang cac truong cua nguoi dung do [id, admin, fullname, username, password, diachi, created_day, updated_day]
-    $results = $user->checkpoint2($username,$password);
-    // $sql = "SELECT * from nguoidung where username =:u and password =:p";
-    // $query = $PDO->prepare($sql);
-    // $query->execute([
-    //     'u' => $username,
-    //     'p' => $password
-    // ]);
-    // $row = $checkpoint;
-    // $results = $checkpoint2;
-    
-    if($row > 0){
-        $_SESSION["id_user"] =  $results['id'];
-        // print_r($results);
-       
-    } else {
-        unset($_SESSION["id_user"]);
-    }
-    
-    if(isset($_SESSION["id_user"])){
+    $row = $dichvu->checkpoint($email, $password);
 
-        if ($results['admin'] == 1) {
-            header("Location: admin/index.php");
-        } else header("Location: index.php");
-        
-    }else {
-        echo '<script>alert("Đăng nhập thất bại!!! Vui lòng kiểm tra lại.");</script>';
-		echo '<script>window.location.href= "login.php";</script>';
+    //result tra ve mang cac truong cua nguoi dung do [id, admin, fullname, username, password, diachi, created_day, updated_day]
+    $results = $dichvu->checkpoint2($email, $password);
+
+    // echo "<pre>";
+    // print_r($results);
+    if ($row > 0) {
+        $_SESSION["id_dv"] =  $results['id_dv'];
+        // print_r($results);
+    } else {
+        unset($_SESSION["id_dv"]);
     }
-       
-    
-    
+    if (isset($_SESSION["id_dv"]) &&  ($results['trangthai'] == 1))  {
+        echo '<script>alert("Đăng nhập tài khoản Dịch vụ thành công!!!");</script>';
+        echo '<script>window.location.href= "./dichvu/index.php";</script>';
+        
+    }
+    elseif(($results['trangthai'] == 0)){
+        echo '<script>alert("Đăng nhập dịch vụ thất bại!!! Vui lòng đợi Admin duyệt tài khoản.");</script>';
+        echo '<script>window.location.href= "loginDV.php";</script>';
+    }
+    else {
+        echo '<script>alert("Đăng nhập dịch vụ thất bại!!! Vui lòng kiểm tra lại.");</script>';
+        echo '<script>window.location.href= "loginDV.php";</script>';
+    }
 }

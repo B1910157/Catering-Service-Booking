@@ -170,7 +170,7 @@ class dattiec
 	public function getUser($id_user)
 	{
 		$dattiecs = [];
-		$stmt = $this->db->prepare('select * from dattiec where id_user = :id_user');
+		$stmt = $this->db->prepare('select * from dattiec where id_user = :id_user order by ngaythuchien DESC');
 		$stmt->execute(['id_user' => $id_user]);
 		while ($row = $stmt->fetch()) {
 			$dattiec = new dattiec($this->db);
@@ -194,11 +194,40 @@ class dattiec
 		return $dattiecs;
 	}
 
-	//Hien thi tat ca menu
-	public function all_DV($id_dv)
+	
+	public function all_DV_ChuaDuyet($id_dv)
 	{
 		$dattiecs = [];
-		$stmt = $this->db->prepare('select * from dattiec where id_dv = :id_dv');
+		$stmt = $this->db->prepare('select * from dattiec where id_dv = :id_dv and trangthai=0');
+		$stmt->execute([
+			'id_dv'=>$id_dv
+		]);
+		while ($row = $stmt->fetch()) {
+			$dattiec = new dattiec($this->db);
+			$dattiec->fillFromDB($row);
+			$dattiecs[] = $dattiec;
+		}
+		return $dattiecs;
+	}
+
+	public function all_DV_DaDuyet($id_dv)
+	{
+		$dattiecs = [];
+		$stmt = $this->db->prepare('select * from dattiec where id_dv = :id_dv and trangthai=1');
+		$stmt->execute([
+			'id_dv'=>$id_dv
+		]);
+		while ($row = $stmt->fetch()) {
+			$dattiec = new dattiec($this->db);
+			$dattiec->fillFromDB($row);
+			$dattiecs[] = $dattiec;
+		}
+		return $dattiecs;
+	}
+	public function all_DV_DaHuy($id_dv)
+	{
+		$dattiecs = [];
+		$stmt = $this->db->prepare('select * from dattiec where id_dv = :id_dv and trangthai=2 or trangthai=3');
 		$stmt->execute([
 			'id_dv'=>$id_dv
 		]);
@@ -212,13 +241,14 @@ class dattiec
 
 	public function findDV($id_dv)
 	{
-		$stmt = $this->db->prepare('select * from dattiec m inner join dichvu ct on m.id_dv = ct.id_dv where m.id_dv = :id_dv');
+		$stmt = $this->db->prepare('select * from dattiec m  join dichvu ct on m.id_dv = ct.id_dv where m.id_dv = :id_dv');
 		$stmt->execute(['id_dv' => $id_dv]);
 		if ($row = $stmt->fetch()) {
 			$this->fillFromDB($row);
 			return $this;
 		} return null;
 	}
+
 
 
 
@@ -318,6 +348,30 @@ class dattiec
 
 
 
+
+
+	public function duyet($id_dattiec){
+		$stmt = $this->db->prepare('update dattiec set trangthai = 1 where id_dattiec = :id_dattiec');
+
+		$rs = $stmt->execute([
+			'id_dattiec'=>$id_dattiec
+		]);
+	}
+
+	public function huy($id_dattiec){
+		$stmt = $this->db->prepare('update dattiec set trangthai = 2 where id_dattiec = :id_dattiec');
+
+		$rs = $stmt->execute([
+			'id_dattiec'=>$id_dattiec
+		]);
+	}
+	public function khachHuy($id_dattiec){
+		$stmt = $this->db->prepare('update dattiec set trangthai = 3 where id_dattiec = :id_dattiec');
+
+		$rs = $stmt->execute([
+			'id_dattiec'=>$id_dattiec
+		]);
+	}
 
 
 	//Cap nhat hoac insert vao table

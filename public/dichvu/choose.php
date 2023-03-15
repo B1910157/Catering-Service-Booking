@@ -13,8 +13,19 @@ $loaimon = new LoaiMon($PDO);
 $menu = new Menu($PDO);
 
 $monan = new MonAn($PDO);
-$monans = $monan->all();
+
+
+
+if(isset($_SESSION['id_dv'] )){
+    $id_dv =  $_SESSION['id_dv'];
+}else{
+    echo '<script>alert("Phiên đăng nhập hết hạn!!!Vui lòng đăng nhập lại.");</script>'; 
+    echo '<script>window.location.href= "../index.php";</script>';
+}
+// $dichvus = $dichvu->all();
+$monans = $monan->findMonDV($id_dv);
 $loaimons = $loaimon->all();
+
 $chitiets = $chitiet->all();
 
 $errors = [];

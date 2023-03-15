@@ -18,7 +18,7 @@ $dichvu = new dichvu($PDO);
 $menus = $menu->allmenu();
 $monans = $monan->all();
 
-$dichvus = $dichvu->all();
+$dichvus = $dichvu->allDuyet();
 $loaimons = $loaimon->all();
 $loaitiecs = $loaitiec->all();
 
@@ -57,221 +57,109 @@ $id_loaitiec = isset($_REQUEST['id_loaitiec']) ?
         <section id="inner" class="inner-section section">
             <!-- SECTION HEADING -->
             <hr>
-            <h2 class="section-heading text-center wow fadeIn title" data-wow-duration="1s">SẢN PHẨM</h2>
+            <h2 class="section-heading text-center wow fadeIn title" data-wow-duration="1s">HỖ TRỢ ĐẶT TIỆC TRỰC TUYẾN</h2>
             <div class="row">
                 <div class="col-12 text-center">
-                    <p class="wow fadeIn note" data-wow-duration="2s">Đảm bảo chất lượng <i class="fa fa-check" aria-hidden="true"></i></p>
+                    <p class="wow fadeIn note" data-wow-duration="2s"> ----------------- </p>
                 </div>
             </div>
             <hr>
             <div class="inner-wrapper row">
-                <div class="list-group m-3 col-md-2">
-                    <p class="list-group-item bg-primary">DANH MỤC</p>
-                    <?php foreach ($loaimons as $loaimon) :
-                        $loaiID = $loaimon->getId(); ?>
-                        <a class="list-group-item list-group-item-action" href="monan.php?id_loaimon=<?php echo $loaiID; ?>">
-                            <?php htmlspecialchars($loaimon->getId());
-                            echo htmlspecialchars($loaimon->tenloaimon) ?>
+                <div class="list-group m-5 col-md-2">
+                    <p class="list-group-item bg-primary">Danh Mục Dịch Vụ</p>
+                    <?php foreach ($dichvus as $dichvu) :
+                        $id_dv = $dichvu->getId(); ?>
+                        <a class="list-group-item list-group-item-action" href="chitietDV.php?id_dv=<?php echo $id_dv; ?>">
+                            <?php htmlspecialchars($dichvu->getId());
+                            echo htmlspecialchars($dichvu->ten_dv) ?>
                         </a>
                     <?php endforeach; ?>
                 </div>
+                <div class="col-1">
 
-               
-                <div class="col-md-9 card-container">
-                    <form id="dattiec" action="addtiec.php" method="post" enctype="multipart/form-data">
-
-
-
-
-                        <div class="form-group">
-                            <label for="id_dv">Chọn dịch vụ</label>
-                            <select require name="id_dv" id="id_dv" class="custom-select">
-                                <option value="">--Chọn--</option>
-                                <?php foreach ($dichvus as $dichvu) :
-
-                                    $dichvuID = $dichvu->getId(); ?>
-
-                                    <option>
-                                        <?php
-                                        echo  $dichvu->getId();
-                                        echo htmlspecialchars($dichvu->ten_dv) ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="id_menu">Chọn Menu</label>
-                            <select require name="id_menu" id="id_menu" class="custom-select">
-                                <option value="">--Chọn--</option>
-                                <?php foreach ($menus as $menu) :
-
-                                    $menuID = $menu->getId(); ?>
-
-                                    <option>
-                                        <?php
-                                        echo  $menu->getId();
-                                        echo htmlspecialchars($menu->tenmenu) ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-
-
-                        <div class="form-group<?= isset($errors['id_loaitiec']) ? ' has-error' : '' ?>">
-                            <label for="id_loaitiec">Loại tiệc:</label>
-
-                            <select require name="id_loaitiec" id="id_loaitiec" class="custom-select">
-                                <option value="">--Chọn--</option>
-                                <!-- <option value="">--- Chọn loại tiệc --- </option> -->
-                                <?php foreach ($loaitiecs as $loaitiec) :
-
-                                    $loaitiecID = $loaitiec->getId(); ?>
-
-                                    <option>
-                                        <?php
-                                        echo  $loaitiec->getId();;
-                                        echo htmlspecialchars($loaitiec->ten_loai) ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-
-                        <div class="form-group<?= isset($errors['soluongban']) ? ' has-error' : '' ?>">
-                            <label for="soluongban">Số lượng bàn:</label>
-                            <input type="text" name="soluongban" class="form-control" id="soluongban" placeholder="nhập số lượng bàn" />
-
-                            <?php if (isset($errors['soluongban'])) : ?>
-                                <span class="help-block">
-                                    <strong><?= htmlspecialchars($errors['soluongban']) ?></strong>
-                                </span>
-                            <?php endif ?>
-                        </div>
-                        <div class="form-group<?= isset($errors['giodat']) ? ' has-error' : '' ?>">
-                            <label for="giodat">Giờ bắt đầu:</label>
-                            <input require type="time" name="giodat" class="form-control" id="giodat" value="<?= isset($_POST['giodat']) ? htmlspecialchars($_POST['giodat']) : '' ?>" />
-
-                            <?php if (isset($errors['giodat'])) : ?>
-                                <span class="help-block">
-                                    <strong><?= htmlspecialchars($errors['giodat']) ?></strong>
-                                </span>
-                            <?php endif ?>
-                        </div>
-                        <div class="form-group<?= isset($errors['ngaydat']) ? ' has-error' : '' ?>">
-                            <label for="ngaydat">Ngày diễn ra:</label>
-                            <input require type="date" name="ngaydat" class="form-control" id="ngaydat" value="<?= isset($_POST['ngaydat']) ? htmlspecialchars($_POST['ngaydat']) : '' ?>" />
-
-                            <?php if (isset($errors['ngaydat'])) : ?>
-                                <span class="help-block">
-                                    <strong><?= htmlspecialchars($errors['ngaydat']) ?></strong>
-                                </span>
-                            <?php endif ?>
-                        </div>
-
-
-                        <div class="form-group">
-                            <label for="tinh">Tỉnh/ Thành phố</label>
-                            <select require name="tinh" id="tinh" class="custom-select">
-                                <option value="">--Chọn--</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="quan">Quận/ Huyện</label>
-                            <select require name="quan" id="quan" class="custom-select">
-                                <option value="">--Chọn--</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="phuong">Phường/ Xã</label>
-                            <select require name="phuong" id="phuong" class="custom-select">
-                                <option value="">--Chọn--</option>
-                            </select>
-                        </div>
-                        <div class="form-group<?= isset($errors['diachitiec']) ? ' has-error' : '' ?>">
-                            <label for="diachitiec">Địa chỉ:</label>
-                            <input require type="text" name="diachitiec" class="form-control" id="diachitiec" placeholder="Địa chỉ" value="<?= isset($_POST['diachitiec']) ? htmlspecialchars($_POST['diachitiec']) : '' ?>" />
-
-                            <?php if (isset($errors['diachitiec'])) : ?>
-                                <span class="help-block">
-                                    <strong><?= htmlspecialchars($errors['diachitiec']) ?></strong>
-                                </span>
-                            <?php endif ?>
-                        </div>
-
-
-                        
-                        <input hidden type="text" name="id_user" value="<?php echo "999"; ?>">
-
-
-                        <button type="submit" name="submit" id="submit" class="btn btn-primary">Đặt tiệc</button>
-
-                        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-                        <script type="text/javascript" src="jquery.validate.js"></script>
-
-                        <script type="text/javascript">
-                            $(document).ready(function() {
-                                $("#dattiec").validate({
-                                    rules: {
-                                        id_dv: "required",
-                                        id_loaitiec: "required",
-
-                                        soluongban: {
-                                            required: true,
-                                            min: 10,
-                                            max: 500
-                                        },
-                                        giodat: "required",
-                                        ngaydat: "required",
-                                        tinh: "required",
-                                        quan: "required",
-                                        phuong: "required",
-                                        diachitiec: "required"
-                                    },
-
-                                    messages: {
-                                        id_dv: "Chọn dịch vụ",
-                                        id_loaitiec: "Chọn loại tiệc",
-                                        soluongban: {
-                                            required: "Nhập số lượng bàn",
-                                            min: "Phục vụ từ 10 bàn",
-                                            max: "Số bàn quá lớn"
-                                        },
-                                        giodat: "Chọn giờ đặt",
-                                        ngaydat: "Chọn ngày đặt",
-                                        tinh: "Chọn Tỉnh/Thành Phố ",
-                                        quan: "Chọn Quận/Huyện thành",
-                                        phuong: "Chọn Phường/Xã",
-                                        diachitiec: "Vui lòng nhập địa chỉ"
-
-
-
-                                    },
-                                    errorElement: "div",
-                                    errorPlacement: function(error, element) {
-                                        error.addClass("invalid-feedback");
-                                        if (element.prop("type") === "checkbox") {
-                                            error.insertAfter(element.siblings("label"));
-                                        } else {
-                                            error.insertAfter(element);
-                                        }
-                                    },
-                                    highlight: function(element, errorClass, validClass) {
-                                        $(element).addClass("is-invalid").removeClass("is-valid");
-                                    },
-                                    unhighlight: function(element, errorClass, validClass) {
-                                        $(element).addClass("is-valid").removeClass("is-invalid");
-                                    }
-                                });
-                            });
-                        </script>
-
-                    </form>
                 </div>
+                <div class="col-6 text-center">
+                    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                        <ol class="carousel-indicators">
+                            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                        </ol>
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img class="d-block w-100" src="../img/bg0.jpg" alt="First slide">
+                            </div>
+                            <div class="carousel-item">
+                                <img class="d-block w-100" src="../img/img1.jpg" alt="Second slide">
+                            </div>
+                            <div class="carousel-item">
+                                <img class="d-block w-100" src="../img/banner.jpg" alt="Third slide">
+                            </div>
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                </div>
+
+
+        </section>
+        <div>
+            <h2 class="title">Các dịch vụ</h2>
+            <div class="col-12 row">
+                <?php foreach ($dichvus as $dichvu) :
+                    if (isset($_GET['id_dv']) && $dichvu->id_dv == $_GET['id_dv']) {
+
+
+                        $dichvuID = $dichvu->getId();
+                ?>
+                        <div class="col-4">
+                            <a href="detail.php?id=<?php echo $dichvuID; ?>">
+                                <img class="w-75" src="img/upload/<?= htmlspecialchars($dichvu->image) ?>">
+                            </a>
+
+                            <div class="text-uppercase p-3 font-weight-bold"><?= htmlspecialchars($dichvu->ten_dv) ?></div>
+                            <div class="p-3 font-weight-bold"><?php $ct =  $category->find($dichvu->id_dv);
+                                                                echo $ct->category_name; ?></div>
+                            <div><b>Giá:</b> <i class="text-danger"> <?php echo number_format($dichvu->price, 0, '', '.'); ?> VNĐ</i></div>
+                            <hr>
+                            <div class="card-footer">
+                                <a class="btn btn-primary" href="detail.php?id=<?php echo $dichvuID; ?>">Xem chi tiết</a>
+
+                            </div>
+                        </div>
+                    <?php } elseif (!isset($_GET['id_dv'])) {
+                        $dichvuID = $dichvu->getId();
+                    ?>
+                        <div class="card-item">
+                            <a href="detail.php?id=<?php echo $dichvuID; ?>">
+                                <img class="w-50" src="img/upload/<?= htmlspecialchars($dichvu->image) ?>">
+                            </a>
+
+                            <div class="text-uppercase p-3 font-weight-bold"><?= htmlspecialchars($dichvu->ten_dv) ?></div>
+                            <div class="text-uppercase p-3 font-weight-bold"> SDT: <?= htmlspecialchars($dichvu->sdt) ?> </div>
+                            <div class="text-uppercase p-3 font-weight-bold"> Tỉnh: <?= htmlspecialchars($dichvu->dv_tinh) ?> </div>
+
+
+                            <hr>
+                            <div class="card-footer">
+                                <a class="btn btn-primary" href="chitietDV.php?id_dv=<?php echo $dichvuID; ?>">Chọn Dịch Vụ</a>
+
+                            </div>
+                        </div>
+                <?php }
+                endforeach; ?>
 
 
             </div>
 
 
-        </section>
+        </div>
         <?php include('../partials/footer.php'); ?>
     </div>
 

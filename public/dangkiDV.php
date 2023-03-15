@@ -15,6 +15,7 @@ $dichvu = new dichvu($PDO);
 $monans = $monan->all();
 $loaimons = $loaimon->all();
 $loaitiecs = $loaitiec->all();
+$dichvus = $dichvu->allDuyet();
 
 $id_loaitiec = isset($_REQUEST['id_loaitiec']) ?
     filter_var($_REQUEST['id_loaitiec'], FILTER_SANITIZE_NUMBER_INT) : -1;
@@ -71,7 +72,7 @@ $id_loaitiec = isset($_REQUEST['id_loaitiec']) ?
                 </div>
 
                 <div class="col-md-9 card-container">
-                    <form method="post" action="xuly_DK_DV.php" id="dkiDV">
+                    <form  action="xuly_DK_DV.php" id="dkiDV"  enctype="multipart/form-data" method="post">
                         <div class="form-outline mb-4">
                             <label class="form-label text-info">Tên Dịch Vụ </label>
                             <input autocomplete="off" type="text" class="form-control form-control-lg" name="ten_dv" />
@@ -92,7 +93,7 @@ $id_loaitiec = isset($_REQUEST['id_loaitiec']) ?
                             <input autocomplete="off" type="password" class="form-control form-control-lg" name="password2" />
                         </div>
                         <div class="form-outline mb-4">
-                            <label class="form-label text-info">Số diện thoại</label>
+                            <label class="form-label text-info">Số điện thoại</label>
                             <input autocomplete="off" type="text" class="form-control form-control-lg" name="sdt" />
                         </div>
                         <div class="form-group">
@@ -123,12 +124,22 @@ $id_loaitiec = isset($_REQUEST['id_loaitiec']) ?
                                 </span>
                             <?php endif ?>
                         </div>
+                        <div class="form-group<?= isset($errors['image']) ? ' has-error' : '' ?>">
+                            <label for="image">Hình ảnh Dịch Vụ:</label>
+                            <input type="file" name="image" class="form-control" maxlen="255" id="image"  value="<?= isset($_POST['image']) ? htmlspecialchars($_POST['image']) : '' ?>" />
+
+                            <?php if (isset($errors['image'])) : ?>
+                                <span class="help-block">
+                                    <strong><?= htmlspecialchars($errors['image']) ?></strong>
+                                </span>
+                            <?php endif ?>
+                        </div>
 
                         <div class="d-flex justify-content-center">
                             <button type="submit" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Đăng ký</button>
                         </div>
 
-                        <p class="text-center text-muted mt-5 mb-0">Bạn đã có tài khoản? <a href="login.php" class="fw-bold text-body"><u>Đăng nhập</u></a></p>
+                        <p class="text-center text-muted mt-5 mb-0">Bạn đã có tài khoản? <a href="loginDV.php" class="fw-bold text-body"><u>Đăng nhập</u></a></p>
 
 
                         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -162,7 +173,7 @@ $id_loaitiec = isset($_REQUEST['id_loaitiec']) ?
                                     messages: {
                                         ten_dv: "Nhập vào tên dịch vụ",
                                         email: "Nhập vào email",
-                                        
+
 
                                         password: {
                                             required: "Vui lòng nhập mật khẩu",

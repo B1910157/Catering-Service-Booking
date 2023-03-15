@@ -10,7 +10,7 @@ $user = new User($PDO);
 //     redirect(BASE_URL_PATH);
 // }
 ?>
-<h2 class="title">Admin Shop</h2>
+<h2 class="title">ADMIN PAGE</h2>
 <br>
 <!-- Nav pills -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light row">
@@ -21,16 +21,17 @@ $user = new User($PDO);
 
 
         <li class="nav-item">
-            <a class="nav-link " href="manage_user.php">Quản lý người dùng</a>
+            <a class="nav-link " href="qly_DV.php">Quản lý dịch vụ</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="manage_category.php">Quản lý danh mục sản phẩm</a>
+            <a class="nav-link" href="qly_TV.php">Quản lý người dùng</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="manage_Pro.php">Quản lý sản phẩm</a>
+            <a class="nav-link" href="qly_loaimon.php">Quản lý loại món</a>
         </li>
+       
         <li class="nav-item">
-            <a class="nav-link" href="manage_order.php">Quản lý đơn hàng</a>
+            <a class="nav-link" href="qly_loaitiec.php">Quản lý loại tiệc</a>
         </li>
     </ul>
     <?php
