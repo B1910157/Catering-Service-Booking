@@ -42,107 +42,106 @@ $dichvus = $dichvu->allDuyet();
 </head>
 
 <body>
-<?php include "../../partials/nav_admin.php";?>
-<hr>
-    <div class="container ">
-        <h2 class="title text-center">
-            Quản lý dịch vụ
-        </h2>
-        <hr>
-        <div class="row">
-            <div class="col-12 text-right">
-                <a href="qly_DV.php" class="btn btn-success">Dịch vụ đang hoạt động</a>
-                <a href="DVChoDuyet.php" class="btn btn-warning">Dịch vụ đang chờ duyệt</a>
-                <a href="DVNgungHoatDong.php" class="btn btn-danger">Dịch vụ ngưng hoạt động</a>
+    <?php include "../../partials/nav_admin.php"; ?>
+    <hr>
+    <main>
 
+        <div class="">
+            <h2 class="title text-center">
+                Quản lý dịch vụ
+            </h2>
+            <hr>
+            <div class="row">
+                <div class="col-12 text-right">
+                    <a href="qly_DV.php" class="btn btn-success">Dịch vụ đang hoạt động</a>
+                    <a href="DVChoDuyet.php" class="btn btn-warning">Dịch vụ đang chờ duyệt</a>
+                    <a href="DVNgungHoatDong.php" class="btn btn-danger">Dịch vụ ngưng hoạt động</a>
+                    <a href="DVHuy.php" class="btn btn-danger">Dịch vụ đã hủy</a>
+
+                </div>
             </div>
-        </div>
 
-        <h2>Dịch vụ đang hoạt động</h2>
-        <br>
-        <hr>
-        <table class="table table-bordered">
+            <h2>Dịch vụ đang hoạt động</h2>
+            <br>
+            <hr>
+            <table class="table table-bordered">
 
-            <thead>
-                <tr>
-                    <th>
-                        STT
-                    </th>
-                    <th>
-                        Tên dịch vụ
-                    </th>
-                    <th>
-                        SĐT
-                    </th>
-                    <th>
-                        Địa chỉ
-                    </th>
-                    <th>
-                        Phường/Xã
-                    </th>
-                    <th>
-                        Quận/Huyện
-                    </th>
-                    <th>
-                        Tỉnh/Thành Phố
-                    </th>
-                    <th>
-                        Trạng thái
-                    </th>
-                    <th>
-                        Thao tác
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                $n = 0;
-                foreach ($dichvus as $dichvu) :
-                    $dichvuID = $dichvu->getId();
-                    $n++;
-                ?>
+                <thead>
                     <tr>
-                        <td>
-                            <?php echo $n; ?>
-                        </td>
-                        <td>
-                            <?php
-                            // echo  $dichvu->getId();
-                            echo htmlspecialchars($dichvu->ten_dv) ?>
-                        </td>
-                        <td>
-                            <?php
-                            echo htmlspecialchars($dichvu->sdt) ?>
-                        </td>
-                        <td>
-                            <?php
-                            echo htmlspecialchars($dichvu->dv_diachi) ?>
-                        </td>
-                        <td>
-                            <?php
-                            echo htmlspecialchars($dichvu->dv_phuong) ?>
-                        </td>
-                        <td>
-                            <?php
-                            echo htmlspecialchars($dichvu->dv_quan) ?>
-                        </td>
-                        <td>
-                            <?php
-                            echo htmlspecialchars($dichvu->dv_tinh) ?>
-                        </td>
-                        <td>
-                            <p class="text-primary">Đang hoạt động</p>
-                        </td>
-                        <td>
-                            <a href="" class="btn btn-danger btn-sm " onclick="return confirm('Xác nhận cho <?php echo $dichvu->ten_dv ?> dừng hoạt động?')">Cho dừng hoạt động</a>
-                        </td>
+                        <th>
+                            STT
+                        </th>
+                        <th>
+                            Tên dịch vụ
+                        </th>
+                        <th>
+                            SĐT
+                        </th>
+                        <th>
+                            Địa chỉ
+                        </th>
+                        <th>
+                            Phường/Xã
+                        </th>
+                        <th>
+                            Quận/Huyện
+                        </th>
+                        <th>
+                            Tỉnh/Thành Phố
+                        </th>
+                        <th>
+                            Thao tác
+                        </th>
                     </tr>
-            </tbody>
-        <?php
-                    $n++;
-                endforeach; ?>
-        </table>
+                </thead>
+                <tbody>
+                    <?php
+                    $n = 0;
+                    foreach ($dichvus as $dichvu) :
+                        $dichvuID = $dichvu->getId();
+                        $n++;
+                    ?>
+                        <tr>
+                            <td>
+                                <?php echo $n; ?>
+                            </td>
+                            <td>
+                                <?php
+                                // echo  $dichvu->getId();
+                                echo htmlspecialchars($dichvu->ten_dv) ?>
+                            </td>
+                            <td>
+                                <?php
+                                echo htmlspecialchars($dichvu->sdt) ?>
+                            </td>
+                            <td>
+                                <?php
+                                echo htmlspecialchars($dichvu->dv_diachi) ?>
+                            </td>
+                            <td>
+                                <?php
+                                echo htmlspecialchars($dichvu->dv_phuong) ?>
+                            </td>
+                            <td>
+                                <?php
+                                echo htmlspecialchars($dichvu->dv_quan) ?>
+                            </td>
+                            <td>
+                                <?php
+                                echo htmlspecialchars($dichvu->dv_tinh) ?>
+                            </td>
+                            
+                            <td>
+                                <a href="xulyDungHD.php?dung=<?php echo $dichvuID;?>" class="btn btn-danger btn-sm " onclick="return confirm('Xác nhận cho <?php echo $dichvu->ten_dv ?> dừng hoạt động?')">Cho dừng hoạt động</a>
+                            </td>
+                        </tr>
+                </tbody>
+            <?php
+                        $n++;
+                    endforeach; ?>
+            </table>
 
+    </main>
 
 </body>
 

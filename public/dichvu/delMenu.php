@@ -6,9 +6,7 @@ session_start();
 use CT466\Project\Menu;
 
 $menu = new menu($PDO);
-//
-// echo "<pre>";
-// print_r($menu->findMenu($_GET['id']));
+
 if ((isset($_GET['id']))  && ($menu->findMenu($_GET['id'])) !== NULL) {
 
     if ($menu->validateToDelete()) {

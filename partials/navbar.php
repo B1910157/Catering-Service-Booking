@@ -66,7 +66,7 @@
 
 				<li class="nav-item">
 					<i style="color: red;"><?php echo "Xin chào, " . $userData->username; ?></i>
-					<a class="nav-link" href="index.php?dangxuat=1">Đăng xuất</a>
+					<a class="nav-link" href="index.php?dangxuat=1"  onclick="return confirm('Xác nhận đăng xuất?')">Đăng xuất</a>
 				</li>
 			</ul>
 

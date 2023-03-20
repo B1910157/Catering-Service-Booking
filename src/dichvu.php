@@ -207,6 +207,18 @@ class dichvu
         }
         return $dichvus;
     }
+    public function allHuy()
+    {
+        $dichvus = [];
+        $stmt = $this->db->prepare('select * from dichvu where trangthai=2');
+        $stmt->execute();
+        while ($row = $stmt->fetch()) {
+            $dichvu = new dichvu($this->db);
+            $dichvu->fillFromDB($row);
+            $dichvus[] = $dichvu;
+        }
+        return $dichvus;
+    }
     public function allChoDuyet()
     {
         $dichvus = [];
@@ -219,6 +231,42 @@ class dichvu
         }
         return $dichvus;
     }
+    public function allNgungHoatDong()
+    {
+        $dichvus = [];
+        $stmt = $this->db->prepare('select * from dichvu where trangthai=3');
+        $stmt->execute();
+        while ($row = $stmt->fetch()) {
+            $dichvu = new dichvu($this->db);
+            $dichvu->fillFromDB($row);
+            $dichvus[] = $dichvu;
+        }
+        return $dichvus;
+    }
+   
+
+    public function choHD($id_dv){
+		$stmt = $this->db->prepare('update dichvu set trangthai = 1 where id_dv = :id_dv');
+
+		$rs = $stmt->execute([
+			'id_dv'=>$id_dv
+		]);
+	}
+    public function huy($id_dv){
+		$stmt = $this->db->prepare('update dichvu set trangthai = 2 where id_dv = :id_dv');
+
+		$rs = $stmt->execute([
+			'id_dv'=>$id_dv
+		]);
+	}
+    public function choNgungHD($id_dv){
+		$stmt = $this->db->prepare('update dichvu set trangthai = 3 where id_dv = :id_dv');
+
+		$rs = $stmt->execute([
+			'id_dv'=>$id_dv
+		]);
+	}
+
 
     //Dem dich vu
     public function count_DV_ON()

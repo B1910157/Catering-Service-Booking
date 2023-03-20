@@ -1,8 +1,6 @@
 <?php
+session_start();
 include "../../bootstrap.php";
-
-
-
 
 use CT466\Project\user;
 use CT466\Project\dattiec;
@@ -35,8 +33,8 @@ $dichvus = $dichvu->all();
     <link href="<?= BASE_URL_PATH . "css/font-awesome.min.css" ?>" rel=" stylesheet">
     <link href="<?= BASE_URL_PATH . "css/animate.css" ?>" rel=" stylesheet">
     <link href="<?= BASE_URL_PATH . "css/style.css" ?>" rel=" stylesheet">
-    <script src="../js/validate_area.js"></script>
-   
+    <!-- <script src="../js/validate_area.js"></script> -->
+
 
 
 </head>
@@ -44,62 +42,48 @@ $dichvus = $dichvu->all();
 <body>
     <!-- Main Page Content -->
     <?php include "../../partials/nav_admin.php"; ?>
-    <div class="container">
-        <?php
-        //  include('../../partials/nav_admin.php');
-        ?>
-        <section id="inner" class="inner-section section">
-            <!-- SECTION HEADING -->
-            <hr>
-            <h2 class="section-heading text-center wow fadeIn title" data-wow-duration="1s">QUẢN LÝ ĐẶT TIỆC TRỰC TUYẾN</h2>
-            <div class="row">
-                <div class="col-12 text-center">
-                    <p class="wow fadeIn note" data-wow-duration="2s">Tận tình chu đáo </p>
+    <main>
+        <div class="">
+            <section id="inner" class="inner-section section">
+                <!-- SECTION HEADING -->
+                <hr>
+                <h2 class="section-heading text-center wow fadeIn title" data-wow-duration="1s">QUẢN LÝ ĐẶT TIỆC TRỰC TUYẾN</h2>
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <p class="wow fadeIn note" data-wow-duration="2s">Tận tình chu đáo </p>
+                    </div>
                 </div>
-            </div>
-            <hr>
-            <div class=" container">
-                <div class="row text-center ">
-                    <a href="qly_DV.php" class="col-4 btn btn-outline-success p-3" style="height: 150px; ">
-                        Số lượng dịch vụ <br>
-                        <?php
-                       echo $dichvu->count_DV_ON();
-                        ?>
-                       <br> Chờ duyệt <br>
-                        <?php
-                       echo $dichvu->count_DV_OFF();
-                        ?>
-                    </a>
-                    <a href="qly_TV.php" class="col-4 btn btn-outline-success p-3" style="height: 150px;">
-                        Số lượng người dùng <br>
-                        <?php
-                        echo $user->countUser();
-                        ?>
-                    </a>
-                    <a href="" class="col-4 btn btn-outline-success p-3" style="height: 150px;">
-                        Tổng số lượt đặt tiệc <br>
-                        <?php
-                        echo $dattiec->count_tongLuot();
-                        ?>
-                    </a>
-
-
+                <hr>
+                <div class=" container">
+                    <div class="row text-center ">
+                        <a href="qly_DV.php" class="col-4 btn btn-outline-success p-3" style="height: 150px; ">
+                            Số lượng dịch vụ <br>
+                            <?php
+                            echo $dichvu->count_DV_ON();
+                            ?>
+                            <br> Chờ duyệt <br>
+                            <?php
+                            echo $dichvu->count_DV_OFF();
+                            ?>
+                        </a>
+                        <a href="qly_TV.php" class="col-4 btn btn-outline-success p-3" style="height: 150px;">
+                            Số lượng người dùng <br>
+                            <?php
+                            echo $user->countUser();
+                            ?>
+                        </a>
+                        <a href="" class="col-4 btn btn-outline-success p-3" style="height: 150px;">
+                            Tổng số lượt đặt tiệc <br>
+                            <?php
+                            echo $dattiec->count_tongLuot();
+                            ?>
+                        </a>
+                    </div>
                 </div>
-            </div>
-           
-        </section>
-        <?php include('../../partials/footer.php'); ?>
-    </div>
+            </section>
+        </div>
 
-    <script src="<?= BASE_URL_PATH . "../js/wow.min.js" ?>"></script>
-
-
-    <script>
-        $(document).ready(function() {
-            new WOW().init();
-
-        });
-    </script>
+    </main>
 
 </body>
 

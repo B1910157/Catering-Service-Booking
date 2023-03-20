@@ -22,21 +22,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // print_r($results);
     if ($row > 0) {
         $_SESSION["id_dv"] =  $results['id_dv'];
+        $password_dv = $results['password'];
+        $email_dv = $results['email'];
+        if (isset($_SESSION["id_dv"]) &&  ($results['trangthai'] == 1)) {
+            echo '<script>alert("Đăng nhập tài khoản Dịch vụ thành công!!!");</script>';
+            echo '<script>window.location.href= "./dichvu/index.php";</script>';
+        } elseif (($results['trangthai'] == 0)) {
+            echo '<script>alert("Đăng nhập dịch vụ thất bại!!! Vui lòng đợi Admin duyệt tài khoản.");</script>';
+            echo '<script>window.location.href= "loginDV.php";</script>';
+        } else {
+            echo '<script>alert("Đăng nhập dịch vụ thất bại!!! Vui lòng kiểm tra lại.");</script>';
+            echo '<script>window.location.href= "loginDV.php";</script>';
+        }
         // print_r($results);
-    } else {
+    }
+     else {
+        echo '<script>alert("Sai email hoặc mật khẩu. Vui lòng kiểm tra lại!!!");</script>';
+        echo '<script>window.location.href= "loginDV.php";</script>';
         unset($_SESSION["id_dv"]);
-    }
-    if (isset($_SESSION["id_dv"]) &&  ($results['trangthai'] == 1))  {
-        echo '<script>alert("Đăng nhập tài khoản Dịch vụ thành công!!!");</script>';
-        echo '<script>window.location.href= "./dichvu/index.php";</script>';
-        
-    }
-    elseif(($results['trangthai'] == 0)){
-        echo '<script>alert("Đăng nhập dịch vụ thất bại!!! Vui lòng đợi Admin duyệt tài khoản.");</script>';
-        echo '<script>window.location.href= "loginDV.php";</script>';
-    }
-    else {
-        echo '<script>alert("Đăng nhập dịch vụ thất bại!!! Vui lòng kiểm tra lại.");</script>';
-        echo '<script>window.location.href= "loginDV.php";</script>';
     }
 }

@@ -1,5 +1,5 @@
 <?php
-include __DIR__ . "/../../bootstrap.php";
+// include __DIR__ . "/../../bootstrap.php";
 require_once __DIR__ . "/../../bootstrap.php";
 session_start();
 
@@ -13,8 +13,7 @@ $id = isset($_REQUEST['id_me']) ?
 if ($id < 0 || !($menu->findMenu($id))) {
     redirect(BASE_URL_PATH);
     // echo "<script>alert('checker');</script>";
-  }
-
+}
 
 $errors = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -31,37 +30,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         print_r($errors);
     }
 }
-
 ?>
-
-
-<div class="container">
-    <div class="row">
-
-        <form class="col-12" action="editMenu.php" enctype="multipart/form-data" method="post">
-            <table class="table">
-                <tr>
-                    <input hidden type="text" name="id_me" value="<?php echo $id; ?>">
-                    <td>Tên Menu</td>
-                    <td>
-
-                        <input require type="text" name="tenmenu" placeholder="Nhập tên menu" value="<?php echo $menu->tenmenu; ?>">
-                    </td>
-                </tr>
-            </table>
-
-
-
-            <button type="submit">Sửa menu</button>
-        </form>
-        
-
-
-    </div>
-
-
-
-
+<div class="">
+    <?php include('../../partials/navAdmin.php'); ?>
+    <main>
+        <div class="row">
+            <form class="col-12" action="editMenu.php" enctype="multipart/form-data" method="post">
+                <table class="table">
+                    <tr>
+                        <input hidden type="text" name="id_me" value="<?php echo $id; ?>">
+                        <td>Tên Menu</td>
+                        <td>
+                            <input require type="text" name="tenmenu" placeholder="Nhập tên menu" value="<?php echo $menu->tenmenu; ?>">
+                        </td>
+                    </tr>
+                </table>
+                <button type="submit">Sửa menu</button>
+            </form>
+        </div>
+    </main>
 
 </div>
 </body>

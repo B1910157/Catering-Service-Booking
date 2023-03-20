@@ -5,7 +5,6 @@ namespace CT466\Project;
 class dattiec
 {
 	private $db;
-
 	private $id_dattiec = -1;
 	public $id_dv;
 	public $id_loaitiec;
@@ -249,13 +248,6 @@ class dattiec
 		} return null;
 	}
 
-
-
-
-
-
-
-
 	public function insertDattiec(array $data)
 	{
 		$this->fill($data);
@@ -295,61 +287,6 @@ class dattiec
 		return $dattiec;
 	}
 
-
-	
-
-	//Hien thi tat ca menu gom ca mon an
-	// public function all()
-	// {
-	// 	$menus = [];
-	// 	$stmt = $this->db->prepare('select * from menu m inner join menuchitiet ct on m.id_menu = ct.id_menu');
-	// 	$stmt->execute();
-	// 	while ($row = $stmt->fetch()) {
-	// 		$menu = new chitiet($this->db);
-	// 		$menu->fillFromDB($row);
-	// 		$menus[] = $menu;
-	// 	} return $menus;
-	// } 
-	// public function all1($id_menu)
-	// {
-	// 	$menus = [];
-	// 	$stmt = $this->db->prepare('select * from  menuchitiet where id_menu = :id_menu');
-	// 	$stmt->execute([
-	// 		'id_menu'=>$id_menu
-	// 	]);
-	// 	while ($row = $stmt->fetch()) {
-	// 		$menu = new chitiet($this->db);
-	// 		$menu->fillFromDB($row);
-	// 		$menus[] = $menu;
-	// 	} return $menus;
-	// } 
-
-	//hien thi tung menu theo id 
-	// public function showmenu($id_menu)
-	// {
-	// 	$menus = [];
-	// 	$stmt = $this->db->prepare('select * from menu m inner join menuchitiet ct on m.id_menu = ct.id_menu where m.id_menu = :id_menu');
-	// 	$stmt->execute(['id_menu' => $id_menu]);
-	// 	while ($row = $stmt->fetch()) {
-	// 		$menu = new chitiet($this->db);
-	// 		$menu->fillFromDB($row);
-	// 		$menus[] = $menu;
-	// 	} return $menus;
-	// } 
-
-	// public function getMenu($id_mon) {
-	// 	$stmt = $this->db->prepare('select * from menu m inner join menuchitiet ct on m.id_menu = ct.id_menu where ct.id_mon = :id_mon');
-	// 	$stmt->execute(['id_mon' => $id_mon]);
-	// 	 if ($row = $stmt->fetch()) {
-	// 		$this->fillFromDB($row);
-	// 		return $this;
-	// 	} return null;
-	// }
-
-
-
-
-
 	public function duyet($id_dattiec){
 		$stmt = $this->db->prepare('update dattiec set trangthai = 1 where id_dattiec = :id_dattiec');
 
@@ -372,8 +309,6 @@ class dattiec
 			'id_dattiec'=>$id_dattiec
 		]);
 	}
-
-
 	//Cap nhat hoac insert vao table
 	public function save()
 	{
@@ -392,8 +327,6 @@ class dattiec
 			phuong = :phuong,
 			quan = :quan,
 			tinh = :tinh
-
-
 			where id_dattiec = :id_dattiec');
 			$result = $stmt->execute([
 				'id_dv' => $this->id_dv,
@@ -408,9 +341,6 @@ class dattiec
 				'phuong' => $this->phuong,
 				'quan' => $this->quan,
 				'tinh' => $this->tinh,
-
-
-
 				'id_dattiec' => $this->id_dattiec
 			]);
 		} else {
@@ -475,9 +405,6 @@ class dattiec
 		return null;
 	}
 
-
-
-
 	public function update(array $data)
 	{
 		$this->fill($data);
@@ -503,14 +430,14 @@ class dattiec
 		]);
 	}
 
-	public function delete_detail()
-	{
-		$stmt = $this->db->prepare('delete from menuchitiet where id_menu = :id_menu and id_mon = :id_mon');
-		return $stmt->execute([
-			'id_menu' => $this->getId(),
-			'id_mon' => $this->id_mon
-		]);
-	}
+	// public function delete_detail()
+	// {
+	// 	$stmt = $this->db->prepare('delete from menuchitiet where id_menu = :id_menu and id_mon = :id_mon');
+	// 	return $stmt->execute([
+	// 		'id_menu' => $this->getId(),
+	// 		'id_mon' => $this->id_mon
+	// 	]);
+	// }
 	//Dem tong so luot dat tiec
 	public function count_tongLuot(){
 		$sql = "SELECT * from dattiec";
@@ -533,31 +460,4 @@ class dattiec
 	}
 
 
-
-
-
-
-	public function insert_menu(array $data)
-	{
-		$this->fill($data);
-		if ($this->validate()) {
-			return $this->insert_menu2();
-		}
-		return false;
-	}
-	public function insert_menu2()
-	{
-		$sql = "insert into menuchitiet (id_menu,id_mon) values (:id_menu, :id_mon)";
-		$query = $this->db->prepare($sql);
-		$result = $query->execute([
-
-			'id_menu' => $this->id_menu,
-			'id_mon' => $this->id_mon
-
-		]);
-		if ($result) {
-			$this->id = $this->db->lastInsertId();
-		}
-		return $result;
-	}
 }

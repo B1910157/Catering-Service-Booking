@@ -1,5 +1,5 @@
 <?php
-include __DIR__ . "/../../bootstrap.php";
+// include __DIR__ . "/../../bootstrap.php";
 require_once __DIR__ . "/../../bootstrap.php";
 session_start();
 
@@ -11,9 +11,6 @@ $dichvu = new dichvu($PDO);
 
 $menus = $menu->allmenu();
 $dichvus = $dichvu->all();
-
-
-
 
 $errors = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -34,12 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo '<script>alert("Bạn chưa đăng nhập!!!!!.");</script>';
         echo '<script>window.location.href= "loginDV.php";</script>';
     }
-
     // echo "<pre>";
     // print_r($_POST);
-
-
-
-
 
 }
