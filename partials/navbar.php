@@ -23,7 +23,7 @@
 					<div class="dropdown-divider"></div>
 					<?php foreach ($dichvus as $dichvu) :
 						$dichvuID = $dichvu->getId(); ?>
-						<a class="dropdown-item" href="chitietDV.php?id_dv=<?php echo $dichvuID; ?>">
+						<a class="dropdown-item" href="create_Menu.php?id_dv=<?php echo $dichvuID; ?>">
 							<?php htmlspecialchars($dichvu->getId());
 							echo htmlspecialchars($dichvu->ten_dv) ?>
 						</a>
@@ -41,8 +41,25 @@
 				<input style="width: 300px;" class="form-control mr-sm-2" type="search" placeholder="Tìm kiếm..." name="tukhoa" aria-label="Search">
 				<button class="btn btn-outline-primary my-2 my-sm-0" type="submit" name="timkiem"><i class="fa fa-search"></i></button>
 			</form>
-			<a href="lichSu.php" class="btn btn-outline-primary my-2 my-sm-0 ml-2">LS</a>
-			
+
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item dropdown">
+					
+					<a class="nav-link dropdown-toggle " id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="">
+					</a>
+					
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						
+						<a href="thongtincanhan.php" class="">Thông tin cá nhân</a>
+						<div class="dropdown-divider"></div>
+						<a href="lichSu.php" class="">Lịch sử</a>
+					</div>
+				</li>
+			</ul>
+
+
+
+
 		</div>
 		<ul class="nav navbar-nav ml-5">
 			<!-- &nbsp;&nbsp;&nbsp;&nbsp; -->
@@ -66,7 +83,7 @@
 
 				<li class="nav-item">
 					<i style="color: red;"><?php echo "Xin chào, " . $userData->username; ?></i>
-					<a class="nav-link" href="index.php?dangxuat=1"  onclick="return confirm('Xác nhận đăng xuất?')">Đăng xuất</a>
+					<a class="nav-link" href="index.php?dangxuat=1" onclick="return confirm('Xác nhận đăng xuất?')">Đăng xuất</a>
 				</li>
 			</ul>
 

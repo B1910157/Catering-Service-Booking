@@ -37,12 +37,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $array['id_loaitiec'] = $_POST['id_loaitiec'];
     $array['id_user'] = $id_user;
     $array['id_menu'] = $_POST['id_menu'];
-
+    $array['id_douong'] = $_POST['id_douong'];
     $array['soluongban'] = $_POST['soluongban'];
     $array['giodat'] = $_POST['giodat'];
     $array['ngaydat'] = $_POST['ngaydat'];
     $array['giamenu'] = $_POST['gia_menu'];
-    $array['tongtien'] = $_POST['gia_menu'] * $_POST['soluongban'];
+    $array['tongtien'] = (($_POST['gia_menu'] * $_POST['soluongban']) + $_POST['giadouong']);
     $array['diachitiec'] = $_POST['diachitiec'];
     $array['phuong'] = $_POST['phuong'];
     $array['quan'] = $_POST['quan'];
@@ -54,6 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
    
     // print_r($a);
     $dattiec->fill($array);
+    
     if ($dattiec->validate()) {
         $dattiec->save();
         echo '<script>alert("Đặt tiệc thành công! Chờ duyệt!.");</script>';

@@ -95,6 +95,17 @@ if (isset($_SESSION['id_dv'])) {
                                 </td>
                             </tr>
                             <tr>
+                                <th>Số tài khoản: </th>
+                                <td><?php
+                                    echo $dichvuLogin->stk;
+
+                                    ?></td>
+                                <th>Loại thẻ:</th>
+                                <td>
+                                    <?php echo $dichvuLogin->loai_the; ?>
+                                </td>
+                            </tr>
+                            <tr>
                                 <th>Email: </th>
                                 <td><?php
                                     echo $dichvuLogin->email;

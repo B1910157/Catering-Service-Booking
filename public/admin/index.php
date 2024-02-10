@@ -12,6 +12,10 @@ $dattiec = new dattiec($PDO);
 $users = $user->all();
 $dichvus = $dichvu->all();
 
+if(!isset($_SESSION['id_admin'])){
+    echo "<script>alert('Bạn chưa đăng nhập'); </script>";
+    echo "<script>window.location.href= 'login.php';</script>";
+}
 
 ?>
 <!DOCTYPE html>
@@ -56,7 +60,7 @@ $dichvus = $dichvu->all();
                 <hr>
                 <div class=" container">
                     <div class="row text-center ">
-                        <a href="qly_DV.php" class="col-4 btn btn-outline-success p-3" style="height: 150px; ">
+                        <a href="qly_DV.php" class="col-4 btn btn-outline-primary p-3" style="height: 150px; ">
                             Số lượng dịch vụ <br>
                             <?php
                             echo $dichvu->count_DV_ON();
@@ -66,13 +70,13 @@ $dichvus = $dichvu->all();
                             echo $dichvu->count_DV_OFF();
                             ?>
                         </a>
-                        <a href="qly_TV.php" class="col-4 btn btn-outline-success p-3" style="height: 150px;">
+                        <a href="qly_TV.php" class="col-4 btn btn-outline-primary p-3" style="height: 150px;">
                             Số lượng người dùng <br>
                             <?php
                             echo $user->countUser();
                             ?>
                         </a>
-                        <a href="" class="col-4 btn btn-outline-success p-3" style="height: 150px;">
+                        <a href="" class="col-4 btn btn-outline-primary p-3" style="height: 150px;">
                             Tổng số lượt đặt tiệc <br>
                             <?php
                             echo $dattiec->count_tongLuot();

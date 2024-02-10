@@ -87,15 +87,13 @@ $lichsu = $dattiec->getUser($userID);
                     <th>STT</th>
                     <th>Ngày Diễn ra</th>
                     <th>Giờ</th>
-                    <th>Loại tiệc</th>
-                    <th>Số bàn</th>
+                    <th>Sự kiện</th>
                     <th>Dịch vụ hỗ trợ</th>
-                    <th>Menu</th>
-                    <th>Giá Menu</th>
-                    <th>Địa chỉ</th>
                     <th>Tổng tiền</th>
+                    <th>Tiền cần cọc</th>
                     <th>Ngày thực hiện</th>
-                    <th>Trạng thái</th>
+                    <th width='12%'>Trạng thái</th>
+                    <th>Chi tiết</th>
                 </tr>
             </thead>
             <tbody>
@@ -121,27 +119,19 @@ $lichsu = $dattiec->getUser($userID);
                                 echo $lt->ten_loai; ?>
 
                             </td>
-                            <td>
-                                <?php echo $dattiec->soluongban; ?> bàn
-                            </td>
+
                             <td>
                                 <?php $tenDV = $dichvu->find($dattiec->id_dv);
                                 echo $tenDV->ten_dv; ?>
 
                             </td>
-                            <td>
-                                <?php $tenMenu = $menu->findMenu($dattiec->id_menu);
-                                echo $tenMenu->tenmenu; ?>
-                            </td>
-                            <td>
-                                <?php echo $dattiec->giamenu; ?> vnđ
-                            </td>
-                            <td>
-                                <?php echo $dattiec->diachitiec, ', ', $dattiec->phuong, ', ', $dattiec->quan, ', ', $dattiec->tinh; ?>
-                            </td>
+
 
                             <td>
-                                <?php echo $dattiec->giamenu; ?>
+                                <?php echo  number_format($dattiec->tongtien); ?> vnđ
+                            </td>
+                            <td>
+                                <?php echo number_format($dattiec->tongtien / 2); ?> vnđ
                             </td>
                             <td>
                                 <?php echo $dattiec->ngaythuchien; ?>
@@ -149,29 +139,35 @@ $lichsu = $dattiec->getUser($userID);
                             <td>
                                 <?php
                                 if ($dattiec->trangthai == 1) {
-                                    echo "<p class='text-primary'>Đã duyệt</p>";
+                                    echo "<i class='text-success fa fa-check'> Đã xác nhận</i>";
                                 }
                                 if ($dattiec->trangthai == 0) {
-                                    echo "<p class='text-warning'>Chờ duyệt</p> <br> ";
+                                    echo "<i class='text-warning'>Chờ xác nhận</i> <br> ";
                                 ?>
-                                    <a href="huyDon.php?id_don=<?php echo $dattiec->getId();  ?>" class="btn btn-outline-danger btn-sm" onclick="return confirm('Xác nhận hủy đơn đặt tiệc?')">Hủy tiệc</a>
+                                    <a href="huyDon.php?id_don=<?php echo $dattiec->getId();  ?>" class="btn btn-danger" onclick="return confirm('Xác nhận hủy đơn đặt tiệc?')"> <i class="fa fa-times" aria-hidden="true"> Hủy</i></a>
                                 <?php
                                 }
                                 if ($dattiec->trangthai == 2) {
-                                    echo "<p class='text-danger'>Đơn đặt tiệc đã bị hủy!!!</p>";
+                                    echo "<i class='text-danger'>Đơn đặt tiệc đã bị hủy!!!</i>";
                                 }
                                 if ($dattiec->trangthai == 3) {
-                                    echo "<p class='text-danger'>Bạn đã hủy đơn!!!</p>";
+                                    echo "<i class='text-danger'>Bạn đã hủy đơn!!!</i>";
+                                ?>
+                                    <!-- <a href="datLai.php?id_don=<?php
+                                                                    //   echo $dattiec->getId(); 
+                                                                    ?>" class="btn btn-outline-primary btn-sm" onclick="return confirm('Xác nhận đặt lại đơn đặt tiệc?')"> <i class="fa fa-refresh" aria-hidden="true"> Đặt lại</i></a> -->
+                                <?php
                                 }
 
                                 ?>
                             </td>
+                            <td>
+                                <a href="chitietLS.php?id_ls=<?php echo $dattiec->getId(); ?>" class="btn btn-primary"><i class="fa fa-info" aria-hidden="true"></i></a>
+                            </td>
 
                             </form>
                         </tr>
-                        <tr>
 
-                        </tr>
                 <?php
                     }
                 endforeach;

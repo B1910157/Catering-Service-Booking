@@ -8,7 +8,6 @@ use CT466\Project\loaitiec;
 use CT466\Project\dichvu;
 use CT466\Project\Menu;
 
-
 $monan = new MonAn($PDO);
 $loaimon = new LoaiMon($PDO);
 $loaitiec = new loaitiec($PDO);
@@ -69,7 +68,7 @@ $id_loaitiec = isset($_REQUEST['id_loaitiec']) ?
                     <p class="list-group-item bg-primary">Danh Mục Dịch Vụ</p>
                     <?php foreach ($dichvus as $dichvu) :
                         $id_dv = $dichvu->getId(); ?>
-                        <a class="list-group-item list-group-item-action" href="chitietDV.php?id_dv=<?php echo $id_dv; ?>">
+                        <a class="list-group-item list-group-item-action" href="create_Menu.php?id_dv=<?php echo $id_dv; ?>">
                             <?php htmlspecialchars($dichvu->getId());
                             echo htmlspecialchars($dichvu->ten_dv) ?>
                         </a>
@@ -111,7 +110,7 @@ $id_loaitiec = isset($_REQUEST['id_loaitiec']) ?
         </section>
         <div>
             <h2 class="title">Các dịch vụ</h2>
-            <div class="col-12 row">
+            <div class="col-12 row container">
                 <?php foreach ($dichvus as $dichvu) :
                     if (isset($_GET['id_dv']) && $dichvu->id_dv == $_GET['id_dv']) {
 
@@ -120,7 +119,7 @@ $id_loaitiec = isset($_REQUEST['id_loaitiec']) ?
                 ?>
                         <div class="col-4">
                             <a href="detail.php?id=<?php echo $dichvuID; ?>">
-                                <img class="w-75" src="img/upload/<?= htmlspecialchars($dichvu->image) ?>">
+                                <img class="" style="height: 100px; width: 100px;" src="img/upload/<?= htmlspecialchars($dichvu->image) ?>">
                             </a>
 
                             <div class="text-uppercase p-3 font-weight-bold"><?= htmlspecialchars($dichvu->ten_dv) ?></div>
@@ -137,18 +136,19 @@ $id_loaitiec = isset($_REQUEST['id_loaitiec']) ?
                         $dichvuID = $dichvu->getId();
                     ?>
                         <div class="card-item">
-                            <a href="detail.php?id=<?php echo $dichvuID; ?>">
-                                <img class="w-50" src="img/upload/<?= htmlspecialchars($dichvu->image) ?>">
+                            <a href="">
+                                <img class="" style="height: 150px; width: 250px;" src="img/upload/<?= htmlspecialchars($dichvu->image) ?>">
                             </a>
 
                             <div class="text-uppercase p-3 font-weight-bold"><?= htmlspecialchars($dichvu->ten_dv) ?></div>
                             <div class="text-uppercase p-3 font-weight-bold"> SDT: <?= htmlspecialchars($dichvu->sdt) ?> </div>
-                            <div class="text-uppercase p-3 font-weight-bold"> Tỉnh: <?= htmlspecialchars($dichvu->dv_tinh) ?> </div>
+                            <div class="text-uppercase p-3 font-weight-bold"> Khu Vực: <?= htmlspecialchars($dichvu->dv_tinh) ?> </div>
+                            <div class="text-uppercase p-3 font-weight-bold"> STK: <?= htmlspecialchars($dichvu->stk) ?> - <?= htmlspecialchars($dichvu->loai_the) ?> </div>
 
 
                             <hr>
                             <div class="card-footer">
-                                <a class="btn btn-primary" href="chitietDV.php?id_dv=<?php echo $dichvuID; ?>">Chọn Dịch Vụ</a>
+                                <a class="btn btn-primary" href="create_menu.php?id_dv=<?php echo $dichvuID; ?>">Chọn Dịch Vụ</a>
 
                             </div>
                         </div>

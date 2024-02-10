@@ -21,6 +21,7 @@ $dichvus = $dichvu->allDuyet();
 <html lang="en">
 
 <head>
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -45,7 +46,6 @@ $dichvus = $dichvu->allDuyet();
     <?php include "../../partials/nav_admin.php"; ?>
     <hr>
     <main>
-
         <div class="">
             <h2 class="title text-center">
                 Quản lý dịch vụ
@@ -60,8 +60,8 @@ $dichvus = $dichvu->allDuyet();
 
                 </div>
             </div>
-
-            <h2>Dịch vụ đang hoạt động</h2>
+            <hr>
+            <h2 class="text-success">Dịch vụ đang hoạt động</h2>
             <br>
             <hr>
             <table class="table table-bordered">
@@ -96,10 +96,10 @@ $dichvus = $dichvu->allDuyet();
                 </thead>
                 <tbody>
                     <?php
-                    $n = 0;
+                    $n = 1;
                     foreach ($dichvus as $dichvu) :
                         $dichvuID = $dichvu->getId();
-                        $n++;
+                       
                     ?>
                         <tr>
                             <td>
@@ -132,7 +132,7 @@ $dichvus = $dichvu->allDuyet();
                             </td>
                             
                             <td>
-                                <a href="xulyDungHD.php?dung=<?php echo $dichvuID;?>" class="btn btn-danger btn-sm " onclick="return confirm('Xác nhận cho <?php echo $dichvu->ten_dv ?> dừng hoạt động?')">Cho dừng hoạt động</a>
+                                <a href="xulyDungHD.php?dung=<?php echo $dichvuID;?>" class="btn btn-danger btn-sm " onclick="return confirm('Xác nhận cho <?php echo $dichvu->ten_dv ?> dừng hoạt động?')"><i class="fa fa-power-off" aria-hidden="true"></i></a>
                             </td>
                         </tr>
                 </tbody>

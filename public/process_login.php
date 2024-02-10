@@ -30,13 +30,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } elseif (($results['trangthai'] == 0)) {
             echo '<script>alert("Đăng nhập dịch vụ thất bại!!! Vui lòng đợi Admin duyệt tài khoản.");</script>';
             echo '<script>window.location.href= "loginDV.php";</script>';
+        }
+        elseif (($results['trangthai'] == 2)) {
+            echo '<script>alert("Dịch vụ bị hủy đăng ký!!!.");</script>';
+            echo '<script>window.location.href= "loginDV.php";</script>';
+        } elseif (($results['trangthai'] == 3)) {
+            echo '<script>alert("Đăng nhập dịch vụ thất bại!!! Dịch vụ bị ngừng hoạt động.");</script>';
+            echo '<script>window.location.href= "loginDV.php";</script>';
         } else {
             echo '<script>alert("Đăng nhập dịch vụ thất bại!!! Vui lòng kiểm tra lại.");</script>';
             echo '<script>window.location.href= "loginDV.php";</script>';
         }
         // print_r($results);
-    }
-     else {
+    } else {
         echo '<script>alert("Sai email hoặc mật khẩu. Vui lòng kiểm tra lại!!!");</script>';
         echo '<script>window.location.href= "loginDV.php";</script>';
         unset($_SESSION["id_dv"]);

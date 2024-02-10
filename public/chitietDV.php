@@ -2,12 +2,12 @@
 include "../bootstrap.php";
 session_start();
 
-use CT466\Project\LoaiMon;
-use CT466\Project\MonAn;
-use CT466\Project\loaitiec;
-use CT466\Project\dichvu;
-use CT466\Project\Menu;
-use CT466\Project\chitiet;
+// use CT466\Project\LoaiMon;
+// use CT466\Project\MonAn;
+// use CT466\Project\loaitiec;
+// use CT466\Project\dichvu;
+// use CT466\Project\Menu;
+// use CT466\Project\chitiet;
 
 
 $monan = new MonAn($PDO);
@@ -98,7 +98,7 @@ if (isset($_GET['id_dv'])) {
                                             <img style="width: 20px;  height: 20px;" src="../img/upload/<?php echo $monan->image; ?>">
                                             <?php
                                             echo 'Món:' . $monan->tenmon;
-                                            echo ' : ' . $monan->gia_mon . 'vnđ <br>';
+                                            echo ' : ' . number_format( $monan->gia_mon ). ' vnđ <br>';
                                             $gia = $idmonn->gia_mon;
                                             $tong = $tong + $gia;
                                             ?>
@@ -116,21 +116,22 @@ if (isset($_GET['id_dv'])) {
                         </div>
                     </form>
                 </div>
-
             </div>
-
-
         </section>
+        <div class="row">
+            <form action="addMenu_User.php" method="post">
+                <input type="text" name="id_dv" value="<?php echo $id_dv;?>">
+                
 
 
-
+            <button>Tạo Menu</button>
+            </form>
+            
+        </div>
     </div>
     <?php include('../partials/footer.php'); ?>
     </div>
-
     <script src="<?= BASE_URL_PATH . "js/wow.min.js" ?>"></script>
-
-
     <script>
         $(document).ready(function() {
             new WOW().init();

@@ -82,36 +82,36 @@ if (isset($_SESSION['id_dv'])) {
                 </div>
                 <hr>
                 <div class="row">
-                    <div class="text-right col-12">
+                    <div class="col-4 ml-3">
+                        <form action="">
+                            <input type="date" name="date">
+                            <button>Lọc</button>
+                        </form>
+                    </div>
+                    <div class="text-right col-7">
                         <a href="index.php" class="btn btn-primary">Đơn đặt tiệc mới</a>
                         <a href="daDuyet.php" class="btn btn-success">Đơn đã duyệt</a>
                         <a href="daHuy.php" class="btn btn-danger">Đơn đã hủy</a>
-
                     </div>
                 </div>
                 <div class="inner-wrapper row">
                     <div class="col-md-12 card-container">
                         <h2 class="text-primary p-2">Đơn đặt tiệc mới</h2>
-                        <table id="sp" class="border text-center table-responsive table-striped">
+                        <table id="sp" class="border text-center table-responsive table-striped" >
                             <thead>
-                                <tr class="border">
+                                <tr class="border ">
                                     <th>STT</th>
                                     <th>Loại tiệc</th>
                                     <th>Khách hàng </th>
-                                    <th>Menu</th>
-                                    <th>Gía menu</th>
                                     <th>Số lượng bàn</th>
                                     <th>giờ đặt</th>
                                     <th>ngày diễn ra tiệc</th>
-
-                                    <th>Tỉnh/Thành Phố</th>
-                                    <th>Quận/Huyện</th>
-                                    <th>Phường/Xã</th>
                                     <th>Địa chỉ diễn ra tiệc</th>
-                                    <th>Ngày khách hàng đặt</th>
                                     <th>Tổng tiền</th>
-
+                                    <th>Tiền cọc</th>
                                     <th>Tùy chọn</th>
+                                    <th>Trạng thái</th>
+                                    <th>Chi tiết</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -120,68 +120,190 @@ if (isset($_SESSION['id_dv'])) {
                                 $dattiec->getId();
                                 $dattiec1 = $dattiec->findDV($id_dv);
                                 $dattiecs = $dattiec->all_DV_ChuaDuyet($id_dv);
+                                if (isset($_GET['date'])) {
+
+                                    $date = $_GET['date'];
+
+                                    $dattiecloc = $dattiec->all_DV_Loc($id_dv, $date);
+                                    // echo "<pre>";
+                                    // print_r($dattiecloc);
+
+
+                                    foreach ($dattiecloc as $dattiec1) :
+                                        $dattiecID = $dattiec1->getId();
+                                        $i++;
+                                ?>
+                                        <tr class="border">
+                                            <td class="border"><?php echo $i ?></td>
+                                            <td class="border"><?php
+                                                                $tenloaitiec =  $loaitiec->find($dattiec1->id_loaitiec);
+                                                                echo $tenloaitiec->ten_loai;
+                                                                ?>
+                                            </td>
+                                            <td class="border"><?php
+                                                                $tenkhachhang =  $user->find($dattiec1->id_user);
+                                                                echo $tenkhachhang->fullname;
+
+                                                                ?></td>
+                                            <td class="border"><?php
+                                                                echo $dattiec1->soluongban;
+                                                                ?></td>
+                                            <td class="border"><?php
+                                                                echo $dattiec1->giodat;
+                                                                ?></td>
+                                            <td class="border"><?php
+                                                                echo $dattiec1->ngaydat;
+                                                                ?></td>
+
+
+                                            <td class="border"><?php echo $dattiec1->diachitiec, ', ', $dattiec1->phuong, ', ', $dattiec1->quan, ', ', $dattiec1->tinh; ?></td>
+
+                                            <td class="border"><?php
+                                                                echo number_format($dattiec1->tongtien);
+                                                                ?> vnđ</td>
+                                            <td class="border"><?php
+                                                                echo number_format($dattiec1->tongtien / 2);
+                                                                ?> vnđ</td>
+
+                                            <td>
+                                                <?php
+                                                if ($dattiec1->trangthai == 0) { ?>
+                                                    <form method="get" action="xuly.php" enctype="multipart/form-data">
+                                                        <input hidden type="text" name="duyet" value="<?php echo $dattiecID; ?>">
+                                                        <button class=" btn w-100 text-primary" type="submit"><i class="fa fa-check-square-o" aria-hidden="true" onclick="return confirm('Xác nhận Duyệt?')"> Duyệt</i></button>
+                                                    </form>
+                                                    <form method="get" action="xulyHuy.php" enctype="multipart/form-data">
+                                                        <input hidden type="text" name="huy" value="<?php echo $dattiecID; ?>">
+                                                        <button class=" btn w-100 text-danger" type="submit"><i class="fa fa-times-circle" aria-hidden="true" onclick="return confirm('Xác nhận Hủy?')"> Hủy</i></button>
+                                                    </form>
+
+                                                <?php
+
+                                                } elseif ($dattiec1->trangthai == 1) {
+                                                    echo "<p class = 'text-success'>Đơn đã duyệt</p>";
+                                                } elseif ($dattiec1->trangthai == 2) {
+                                                    echo "<p class = 'text-danger'>Đơn đã hủy</p>";
+                                                } elseif ($dattiec1->trangthai == 3) {
+                                                    echo "<p class = 'text-danger'>Đơn khách hủy</p>";
+                                                }
+
+                                                ?>
+                                            </td>
+                                            <td>
+                                                <?php
+                                                if ($dattiec1->trangthai == 0) {
+                                                    echo "<p class = 'text-warning'>Đơn mới</p>";
+                                                } elseif ($dattiec1->trangthai == 1) {
+                                                    echo "<p class = 'text-success'>Đơn đã duyệt</p>";
+                                                } elseif ($dattiec1->trangthai == 2) {
+                                                    echo "<p class = 'text-danger'>Đơn đã hủy</p>";
+                                                } elseif ($dattiec1->trangthai == 3) {
+                                                    echo "<p class = 'text-danger'>Đơn khách hủy</p>";
+                                                }
+                                                ?>
+                                            </td>
+                                            <td>
+                                                <a href="chitietDatTiec.php?id_ct=<?php echo $dattiec1->getId() ?>">Chi tiết</a>
+                                            </td>
+
+                                        </tr>
+                                    <?php
+                                    endforeach;
+                                    ?>
+                            </tbody>
+
+                        <?php }
+                                elseif ($dattiecs == null && !isset($_GET['date'])) {
+                        ?>
+                            <tr>
+                                <td colspan="12">Chưa có đơn nào</td>
+                            </tr>
+                        <?php
+                                }else{
                                 foreach ($dattiecs as $dattiec1) :
                                     $dattiecID = $dattiec1->getId();
                                     $i++;
-                                ?>
-                                    <tr class="border">
-                                        <td class="border"><?php echo $i ?></td>
-                                        <td class="border"><?php
-                                                            $tenloaitiec =  $loaitiec->find($dattiec1->id_loaitiec);
-                                                            echo $tenloaitiec->ten_loai;
-                                                            ?>
-                                        </td>
-                                        <td class="border"><?php
-                                                            $tenkhachhang =  $user->find($dattiec1->id_user);
-                                                            echo $tenkhachhang->fullname;
+                        ?>
+                            <tr class="border">
+                                <td class="border"><?php echo $i ?></td>
+                                <td class="border"><?php
+                                                    $tenloaitiec =  $loaitiec->find($dattiec1->id_loaitiec);
+                                                    echo $tenloaitiec->ten_loai;
+                                                    ?>
+                                </td>
+                                <td class="border"><?php
+                                                    $tenkhachhang =  $user->find($dattiec1->id_user);
+                                                    echo $tenkhachhang->fullname;
 
-                                                            ?></td>
-                                        <td class="border"><?php
-                                                            $tenmenu =  $menu->findMenu($dattiec1->id_menu);
-                                                            echo $tenmenu->tenmenu;
+                                                    ?></td>
 
-                                                            ?></td>
-                                        <td class="border"><?php
-                                                            echo $dattiec1->giamenu;
-                                                            ?> vnđ</td>
-                                        <td class="border"><?php
-                                                            echo $dattiec1->soluongban;
-                                                            ?></td>
-                                        <td class="border"><?php
-                                                            echo $dattiec1->giodat;
-                                                            ?></td>
-                                        <td class="border"><?php
-                                                            echo $dattiec1->ngaydat;
-                                                            ?></td>
-                                        <td class="border"><?php
-                                                            echo $dattiec1->tinh;
-                                                            ?></td>
-                                        <td class="border"><?php echo $dattiec1->quan; ?></td>
-                                        <td class="border"><?php echo $dattiec1->phuong; ?></td>
-                                        <td class="border"><?php echo $dattiec1->diachitiec; ?></td>
-                                        <td class="border"><?php echo $dattiec1->ngaythuchien; ?></td>
-                                        <td class="border"><?php
-                                                            echo $dattiec1->giamenu;
-                                                            ?> vnđ</td>
-                                      
-                                        <td class="border">
-                                            <!-- <a class="btn btn-primary" href="xuly.php?duyet=<?php echo $dattiecID;  ?>">Duyệt</a>
-                                        <a class="btn btn-danger" href="xuly.php?huy=<?php echo $dattiecID;   ?>">Hủy</a> -->
-                                            <form method="get" action="xuly.php" enctype="multipart/form-data">
-                                                <input hidden type="text" name="duyet" value="<?php echo $dattiecID; ?>">
-                                                <button class=" btn w-100 text-primary" type="submit"><i class="fa fa-check-square-o" aria-hidden="true" onclick="return confirm('Xác nhận Duyệt?')"> Duyệt</i></button>
-                                            </form>
-                                            <form method="get" action="xulyHuy.php" enctype="multipart/form-data">
-                                                <input hidden type="text" name="huy" value="<?php echo $dattiecID; ?>">
-                                                <button class=" btn w-100 text-danger" type="submit"><i class="fa fa-times-circle" aria-hidden="true" onclick="return confirm('Xác nhận Hủy?')"> Hủy</i></button>
-                                            </form>
-                                        </td>
 
-                                    </tr>
-                                <?php
-                                endforeach;
-                                ?>
-                            </tbody>
+                                <td class="border"><?php
+                                                    echo $dattiec1->soluongban;
+                                                    ?></td>
+                                <td class="border"><?php
+                                                    echo $dattiec1->giodat;
+                                                    ?></td>
+                                <td class="border"><?php
+                                                    echo $dattiec1->ngaydat;
+                                                    ?></td>
+
+
+                                <td class="border"><?php echo $dattiec1->diachitiec, ', ', $dattiec1->phuong, ', ', $dattiec1->quan, ', ', $dattiec1->tinh; ?></td>
+
+                                <td class="border"><?php
+                                                    echo number_format($dattiec1->tongtien);
+                                                    ?> vnđ</td>
+                                <td class="border"><?php
+                                                    echo number_format($dattiec1->tongtien / 2);
+                                                    ?> vnđ</td>
+
+                                <td>
+                                    <?php
+                                    if ($dattiec1->trangthai == 0) { ?>
+                                        <form method="get" action="xuly.php" enctype="multipart/form-data">
+                                            <input hidden type="text" name="duyet" value="<?php echo $dattiecID; ?>">
+                                            <button class=" btn w-100 text-primary" type="submit"><i class="fa fa-check-square-o" aria-hidden="true" onclick="return confirm('Xác nhận Duyệt?')"> Duyệt</i></button>
+                                        </form>
+                                        <form method="get" action="xulyHuy.php" enctype="multipart/form-data">
+                                            <input hidden type="text" name="huy" value="<?php echo $dattiecID; ?>">
+                                            <button class=" btn w-100 text-danger" type="submit"><i class="fa fa-times-circle" aria-hidden="true" onclick="return confirm('Xác nhận Hủy?')"> Hủy</i></button>
+                                        </form>
+
+                                    <?php
+
+                                    } elseif ($dattiec1->trangthai == 1) {
+                                        echo "<p class = 'text-success'>Đơn đã duyệt</p>";
+                                    } elseif ($dattiec1->trangthai == 2) {
+                                        echo "<p class = 'text-danger'>Đơn đã hủy</p>";
+                                    } elseif ($dattiec1->trangthai == 3) {
+                                        echo "<p class = 'text-danger'>Đơn khách hủy</p>";
+                                    }
+
+                                    ?>
+                                </td>
+                                <td>
+                                    <?php
+                                    if ($dattiec1->trangthai == 0) {
+                                        echo "<p class = 'text-warning'>Đơn mới</p>";
+                                    } elseif ($dattiec1->trangthai == 1) {
+                                        echo "<p class = 'text-success'>Đơn đã duyệt</p>";
+                                    } elseif ($dattiec1->trangthai == 2) {
+                                        echo "<p class = 'text-danger'>Đơn đã hủy</p>";
+                                    } elseif ($dattiec1->trangthai == 3) {
+                                        echo "<p class = 'text-danger'>Đơn khách hủy</p>";
+                                    }
+                                    ?>
+                                </td>
+                                <td>
+                                    <a href="chitietDatTiec.php?id_ct=<?php echo $dattiec1->getId() ?>">Chi tiết</a>
+                                </td>
+
+                            </tr>
+                        <?php
+                                endforeach;}
+                        ?>
+                        </tbody>
                         </table>
                     </div>
                 </div>

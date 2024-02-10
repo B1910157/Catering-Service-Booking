@@ -15,6 +15,7 @@ $users = $user->all();
 $dichvus = $dichvu->allHuy();
 
 
+
 ?>
 
 <!DOCTYPE html>
@@ -58,7 +59,8 @@ $dichvus = $dichvu->allHuy();
                     <a href="DVHuy.php" class="btn btn-danger">Dịch vụ đã hủy</a>
                 </div>
             </div>
-            <h2>Dịch vụ Đang Chờ Duyệt</h2>
+            <hr>
+            <h2>Dịch vụ đã bị hủy</h2>
             <br>
             <hr>
             <table class="table table-bordered">
@@ -129,7 +131,7 @@ $dichvus = $dichvu->allHuy();
                                 echo htmlspecialchars($dichvu->dv_tinh) ?>
                             </td>
                             <td>
-                                <a href="xulyDuyet.php?duyet=<?php echo $dichvuID;?>" class="btn btn-success" onclick="return confirm('Xác nhận cho <?php echo $dichvu->ten_dv ?> hoạt động?')">Cho hoạt động</a>
+                                <a href="xulyDuyet.php?duyet=<?php echo $dichvuID;?>" class="btn btn-success" onclick="return confirm('Xác nhận cho <?php echo $dichvu->ten_dv ?> hoạt động?')"><i class="fa fa-power-off" aria-hidden="true"></i></a>
                             </td>
                         </tr>
                 </tbody>

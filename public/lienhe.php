@@ -2,25 +2,8 @@
 include "../bootstrap.php";
 session_start();
 
-use CT466\Project\LoaiMon;
-use CT466\Project\MonAn;
-use CT466\Project\loaitiec;
-use CT466\Project\dichvu;
-use CT466\Project\Menu;
-
-
-$monan = new MonAn($PDO);
-$loaimon = new LoaiMon($PDO);
-$loaitiec = new loaitiec($PDO);
-$menu = new Menu($PDO);
-$dichvu = new dichvu($PDO);
-
-$menus = $menu->allmenu();
-$monans = $monan->all();
-
-$dichvus = $dichvu->allDuyet();
-$loaimons = $loaimon->all();
-$loaitiecs = $loaitiec->all();
+use CT466\Project\gopy;
+$gopy = new gopy($PDO);
 
 $id_loaitiec = isset($_REQUEST['id_loaitiec']) ?
     filter_var($_REQUEST['id_loaitiec'], FILTER_SANITIZE_NUMBER_INT) : -1;
@@ -61,18 +44,18 @@ $id_loaitiec = isset($_REQUEST['id_loaitiec']) ?
                 <div class="col-8">
                     <p>Chúng tôi rất vui khi được nghe ý kiến từ các bạn!!!</p>
                     Nội dung liên hệ của bạn:
-                    <form action="#">
+                    <form action="xulylienhe.php" method="post">
                         <div class="form-group m-3">
                             <label class="font-weight-bold">Họ tên của bạn:</label>
-                            <input type="text" class="form-control" placeholder="Nhập vào họ tên của bạn">
+                            <input type="text" class="form-control" placeholder="Nhập vào họ tên của bạn" name="nguoigopy" required>
                         </div>
                         <div class="form-group m-3">
                             <label class="font-weight-bold">Email:</label>
-                            <input type="email" class="form-control" placeholder="Nhập vào email">
+                            <input type="email" class="form-control" placeholder="Nhập vào email" name="email" required>
                         </div>
                         <div class="form-group m-3">
                             <label class="font-weight-bold">Nội dung liên hệ:</label><br>
-                            <textarea name="noidung" id="noidung" cols="92" rows="5" placeholder="Nội dung liên hệ ..."></textarea>
+                            <textarea name="noidung" id="noidung" cols="92" rows="5" placeholder="Nội dung liên hệ ..." required></textarea>
                         </div>
                         <div class="text-right">
                             <button type="submit" class="btn btn-primary m-3 ">Gửi liên hệ</button>

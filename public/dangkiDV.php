@@ -49,177 +49,172 @@ $id_loaitiec = isset($_REQUEST['id_loaitiec']) ?
     <div class="container">
         <?php include('../partials/navbar.php');
         ?>
-        <section id="inner" class="inner-section section">
-            <!-- SECTION HEADING -->
-            <hr>
-            <h2 class="section-heading text-center wow fadeIn title" data-wow-duration="1s">SẢN PHẨM</h2>
-            <div class="row">
-                <div class="col-12 text-center">
-                    <p class="wow fadeIn note" data-wow-duration="2s">Đảm bảo chất lượng <i class="fa fa-check" aria-hidden="true"></i></p>
+        <section class="bg-image" style="background-image: url('img/bg.jpeg');">
+            <div class="mask d-flex align-items-center p-2">
+                <div class="container ">
+                    <div class="row d-flex justify-content-center align-items-center">
+                        <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+                            <div class="card" style="border-radius: 15px;">
+                                <div class="card-body p-5">
+                                    <h2 class="text-uppercase text-center mb-5 title">Đăng ký dịch vụ</h2>
+                                    <form action="xuly_DK_DV.php" id="dkiDV" enctype="multipart/form-data" method="post">
+                                        <div class="form-outline mb-4">
+                                            <label class="form-label text-info">Tên Dịch Vụ </label>
+                                            <input autocomplete="off" type="text" class="form-control form-control-lg" name="ten_dv" />
+                                        </div>
+
+                                        <div class="form-outline mb-4">
+                                            <label class="form-label text-info">Email</label>
+                                            <input autocomplete="off" type="text" class="form-control form-control-lg" name="email" />
+                                        </div>
+
+                                        <div class="form-outline mb-4">
+                                            <label class="form-label text-info">Mật khẩu</label>
+                                            <input autocomplete="off" type="password" class="form-control form-control-lg" name="password" id="password" />
+                                        </div>
+
+                                        <div class="form-outline mb-4">
+                                            <label class="form-label text-info">Nhập lại mật khẩu</label>
+                                            <input autocomplete="off" type="password" class="form-control form-control-lg" name="password2" />
+                                        </div>
+                                        <div class="form-outline mb-4">
+                                            <label class="form-label text-info">Số điện thoại</label>
+                                            <input autocomplete="off" type="text" class="form-control form-control-lg" name="sdt" />
+                                        </div>
+                                        <div class="form-outline mb-4">
+                                            <label class="form-label text-info">Số tài khoản</label>
+                                            <input autocomplete="off" type="text" class="form-control form-control-lg" name="stk" />
+                                        </div>
+                                        <div class="form-outline mb-4">
+                                            <label class="form-label text-info">Loại thẻ</label>
+                                            <input autocomplete="off" type="text" class="form-control form-control-lg" name="loai_the" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="tinh">Tỉnh/ Thành phố</label>
+                                            <select require name="tinh" id="tinh" class="custom-select">
+                                                <option value="">--Chọn--</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="quan">Quận/ Huyện</label>
+                                            <select require name="quan" id="quan" class="custom-select">
+                                                <option value="">--Chọn--</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="phuong">Phường/ Xã</label>
+                                            <select require name="phuong" id="phuong" class="custom-select">
+                                                <option value="">--Chọn--</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group<?= isset($errors['diachi']) ? ' has-error' : '' ?>">
+                                            <label for="diachi">Địa chỉ:</label>
+                                            <input require type="text" name="diachi" class="form-control" id="diachi" placeholder="Địa chỉ" value="<?= isset($_POST['diachi']) ? htmlspecialchars($_POST['diachi']) : '' ?>" />
+
+                                            <?php if (isset($errors['diachi'])) : ?>
+                                                <span class="help-block">
+                                                    <strong><?= htmlspecialchars($errors['diachi']) ?></strong>
+                                                </span>
+                                            <?php endif ?>
+                                        </div>
+                                        <div class="form-group<?= isset($errors['image']) ? ' has-error' : '' ?>">
+                                            <label for="image">Hình ảnh Dịch Vụ:</label>
+                                            <input type="file" name="image" class="form-control" maxlen="255" id="image" value="<?= isset($_POST['image']) ? htmlspecialchars($_POST['image']) : '' ?>" />
+
+                                            <?php if (isset($errors['image'])) : ?>
+                                                <span class="help-block">
+                                                    <strong><?= htmlspecialchars($errors['image']) ?></strong>
+                                                </span>
+                                            <?php endif ?>
+                                        </div>
+
+                                        <div class="d-flex justify-content-center">
+                                            <button type="submit" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Đăng ký</button>
+                                        </div>
+
+                                        <p class="text-center text-muted mt-5 mb-0">Bạn đã có tài khoản? <a href="loginDV.php" class="fw-bold text-body"><u>Đăng nhập</u></a></p>
+
+
+                                        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                                        <script type="text/javascript" src="./js/jquery.validate.js"></script>
+
+                                        <script type="text/javascript">
+                                            $(document).ready(function() {
+                                                new WOW().init();
+                                                $("#dkiDV").validate({
+                                                    rules: {
+                                                        ten_dv: "required",
+                                                        email: "required",
+                                                        password: {
+                                                            required: true,
+                                                            minlength: 5
+                                                        },
+                                                        password2: {
+                                                            required: true,
+                                                            minlength: 5,
+                                                            equalTo: "#password"
+                                                        },
+                                                        sdt: "required",
+                                                        tinh: "required",
+                                                        quan: "required",
+                                                        phuong: "required",
+                                                        diachi: {
+                                                            required: true
+                                                        }
+                                                    },
+
+                                                    messages: {
+                                                        ten_dv: "Nhập vào tên dịch vụ",
+                                                        email: "Nhập vào email",
+
+
+                                                        password: {
+                                                            required: "Vui lòng nhập mật khẩu",
+                                                            minlength: "Mật khẩu ít nhất 5 kí tự"
+                                                        },
+
+                                                        password2: {
+                                                            required: "Vui lòng nhập lại mật khẩu",
+                                                            minlength: "mật khẩu ít nhất 5 kí tự",
+                                                            equalTo: "Nhập lại mật khẩu không trùng khớp"
+                                                        },
+                                                        sdt: "Nhập vào số điện thoại",
+                                                        tinh: "Vui lòng chọn tỉnh/thành phố",
+                                                        quan: "Vui lòng chọn Quận/Huyện",
+                                                        phuong: "Vui lòng chọn Phường/Xã",
+                                                        diachi: {
+                                                            required: "Nhập vào địa chỉ của bạn"
+                                                        }
+
+                                                    },
+                                                    errorElement: "div",
+                                                    errorPlacement: function(error, element) {
+                                                        error.addClass("invalid-feedback");
+                                                        if (element.prop("type") === "checkbox") {
+                                                            error.insertAfter(element.siblings("label"));
+                                                        } else {
+                                                            error.insertAfter(element);
+                                                        }
+                                                    },
+                                                    highlight: function(element, errorClass, validClass) {
+                                                        $(element).addClass("is-invalid").removeClass("is-valid");
+                                                    },
+                                                    unhighlight: function(element, errorClass, validClass) {
+                                                        $(element).addClass("is-valid").removeClass("is-invalid");
+                                                    }
+                                                });
+                                            });
+                                        </script>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <hr>
-            <div class="inner-wrapper row">
-                <div class="list-group m-3 col-md-2">
-                    <p class="list-group-item bg-primary">DANH MỤC</p>
-                    <?php foreach ($loaimons as $loaimon) :
-                        $loaiID = $loaimon->getId(); ?>
-                        <a class="list-group-item list-group-item-action" href="monan.php?id_loaimon=<?php echo $loaiID; ?>">
-                            <?php htmlspecialchars($loaimon->getId());
-                            echo htmlspecialchars($loaimon->tenloaimon) ?>
-                        </a>
-                    <?php endforeach; ?>
-                </div>
-
-                <div class="col-md-9 card-container">
-                    <form  action="xuly_DK_DV.php" id="dkiDV"  enctype="multipart/form-data" method="post">
-                        <div class="form-outline mb-4">
-                            <label class="form-label text-info">Tên Dịch Vụ </label>
-                            <input autocomplete="off" type="text" class="form-control form-control-lg" name="ten_dv" />
-                        </div>
-
-                        <div class="form-outline mb-4">
-                            <label class="form-label text-info">Email</label>
-                            <input autocomplete="off" type="text" class="form-control form-control-lg" name="email" />
-                        </div>
-
-                        <div class="form-outline mb-4">
-                            <label class="form-label text-info">Mật khẩu</label>
-                            <input autocomplete="off" type="password" class="form-control form-control-lg" name="password" id="password" />
-                        </div>
-
-                        <div class="form-outline mb-4">
-                            <label class="form-label text-info">Nhập lại mật khẩu</label>
-                            <input autocomplete="off" type="password" class="form-control form-control-lg" name="password2" />
-                        </div>
-                        <div class="form-outline mb-4">
-                            <label class="form-label text-info">Số điện thoại</label>
-                            <input autocomplete="off" type="text" class="form-control form-control-lg" name="sdt" />
-                        </div>
-                        <div class="form-group">
-                            <label for="tinh">Tỉnh/ Thành phố</label>
-                            <select require name="tinh" id="tinh" class="custom-select">
-                                <option value="">--Chọn--</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="quan">Quận/ Huyện</label>
-                            <select require name="quan" id="quan" class="custom-select">
-                                <option value="">--Chọn--</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="phuong">Phường/ Xã</label>
-                            <select require name="phuong" id="phuong" class="custom-select">
-                                <option value="">--Chọn--</option>
-                            </select>
-                        </div>
-                        <div class="form-group<?= isset($errors['diachi']) ? ' has-error' : '' ?>">
-                            <label for="diachi">Địa chỉ:</label>
-                            <input require type="text" name="diachi" class="form-control" id="diachi" placeholder="Địa chỉ" value="<?= isset($_POST['diachi']) ? htmlspecialchars($_POST['diachi']) : '' ?>" />
-
-                            <?php if (isset($errors['diachi'])) : ?>
-                                <span class="help-block">
-                                    <strong><?= htmlspecialchars($errors['diachi']) ?></strong>
-                                </span>
-                            <?php endif ?>
-                        </div>
-                        <div class="form-group<?= isset($errors['image']) ? ' has-error' : '' ?>">
-                            <label for="image">Hình ảnh Dịch Vụ:</label>
-                            <input type="file" name="image" class="form-control" maxlen="255" id="image"  value="<?= isset($_POST['image']) ? htmlspecialchars($_POST['image']) : '' ?>" />
-
-                            <?php if (isset($errors['image'])) : ?>
-                                <span class="help-block">
-                                    <strong><?= htmlspecialchars($errors['image']) ?></strong>
-                                </span>
-                            <?php endif ?>
-                        </div>
-
-                        <div class="d-flex justify-content-center">
-                            <button type="submit" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Đăng ký</button>
-                        </div>
-
-                        <p class="text-center text-muted mt-5 mb-0">Bạn đã có tài khoản? <a href="loginDV.php" class="fw-bold text-body"><u>Đăng nhập</u></a></p>
-
-
-                        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-                        <script type="text/javascript" src="./js/jquery.validate.js"></script>
-
-                        <script type="text/javascript">
-                            $(document).ready(function() {
-                                new WOW().init();
-                                $("#dkiDV").validate({
-                                    rules: {
-                                        ten_dv: "required",
-                                        email: "required",
-                                        password: {
-                                            required: true,
-                                            minlength: 5
-                                        },
-                                        password2: {
-                                            required: true,
-                                            minlength: 5,
-                                            equalTo: "#password"
-                                        },
-                                        sdt: "required",
-                                        tinh: "required",
-                                        quan: "required",
-                                        phuong: "required",
-                                        diachi: {
-                                            required: true
-                                        }
-                                    },
-
-                                    messages: {
-                                        ten_dv: "Nhập vào tên dịch vụ",
-                                        email: "Nhập vào email",
-
-
-                                        password: {
-                                            required: "Vui lòng nhập mật khẩu",
-                                            minlength: "Mật khẩu ít nhất 5 kí tự"
-                                        },
-
-                                        password2: {
-                                            required: "Vui lòng nhập lại mật khẩu",
-                                            minlength: "mật khẩu ít nhất 5 kí tự",
-                                            equalTo: "Nhập lại mật khẩu không trùng khớp"
-                                        },
-                                        sdt: "Nhập vào số điện thoại",
-                                        tinh: "Vui lòng chọn tỉnh/thành phố",
-                                        quan: "Vui lòng chọn Quận/Huyện",
-                                        phuong: "Vui lòng chọn Phường/Xã",
-                                        diachi: {
-                                            required: "Nhập vào địa chỉ của bạn"
-                                        }
-
-                                    },
-                                    errorElement: "div",
-                                    errorPlacement: function(error, element) {
-                                        error.addClass("invalid-feedback");
-                                        if (element.prop("type") === "checkbox") {
-                                            error.insertAfter(element.siblings("label"));
-                                        } else {
-                                            error.insertAfter(element);
-                                        }
-                                    },
-                                    highlight: function(element, errorClass, validClass) {
-                                        $(element).addClass("is-invalid").removeClass("is-valid");
-                                    },
-                                    unhighlight: function(element, errorClass, validClass) {
-                                        $(element).addClass("is-valid").removeClass("is-invalid");
-                                    }
-                                });
-                            });
-                        </script>
-                    </form>
-                </div>
-
-
-            </div>
-
-
         </section>
+
         <?php include('../partials/footer.php'); ?>
     </div>
 

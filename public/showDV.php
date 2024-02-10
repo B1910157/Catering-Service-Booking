@@ -81,9 +81,9 @@ $id_loaitiec = isset($_REQUEST['id_loaitiec']) ?
                     <?php } elseif (!isset($_GET['id_dv'])) {
                         $dichvuID = $dichvu->getId();
                     ?>
-                        <div class="card-item">
-                            <a href="detail.php?id=<?php echo $dichvuID; ?>">
-                                <img class="w-50" src="img/upload/<?= htmlspecialchars($dichvu->image) ?>">
+                        <div class="card-item container">
+                            <a href="">
+                                <img   style="height: 200px; width: 250px;" src="img/upload/<?= htmlspecialchars($dichvu->image) ?>">
                             </a>
 
                             <div class="text-uppercase p-3 font-weight-bold"><?= htmlspecialchars($dichvu->ten_dv) ?></div>
@@ -93,7 +93,7 @@ $id_loaitiec = isset($_REQUEST['id_loaitiec']) ?
 
                             <hr>
                             <div class="card-footer">
-                                <a class="btn btn-primary" href="chitietDV.php?id_dv=<?php echo $dichvuID; ?>">Chọn Dịch Vụ</a>
+                                <a class="btn btn-primary" href="create_Menu.php?id_dv=<?php echo $dichvuID; ?>">Chọn Dịch Vụ</a>
 
                             </div>
                         </div>

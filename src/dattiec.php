@@ -10,6 +10,7 @@ class dattiec
 	public $id_loaitiec;
 	public $id_user;
 	public $id_menu;
+	public $id_douong;
 	public $soluongban;
 	public $giodat;
 	public $ngaydat;
@@ -48,6 +49,9 @@ class dattiec
 		}
 		if (isset($data['id_menu'])) {
 			$this->id_menu = trim($data['id_menu']);
+		}
+		if (isset($data['id_douong'])) {
+			$this->id_douong = trim($data['id_douong']);
 		}
 		if (isset($data['soluongban'])) {
 			$this->soluongban = trim($data['soluongban']);
@@ -104,6 +108,9 @@ class dattiec
 		if (!$this->id_menu) {
 			$this->errors['id_menu'] = 'id menu không hợp lệ.';
 		}
+		// if (!$this->id_douong) {
+		// 	$this->errors['id_douong'] = 'id douong không hợp lệ.';
+		// }
 		if (!$this->soluongban) {
 			$this->errors['soluongban'] = 'Chỉ phục vụ trên 10 bàn.';
 		}
@@ -148,6 +155,7 @@ class dattiec
 			'id_loaitiec' => $this->id_loaitiec,
 			'id_user' => $this->id_user,
 			'id_menu' => $this->id_menu,
+			'id_douong' => $this->id_douong,
 			'soluongban' => $this->soluongban,
 			'giodat' => $this->giodat,
 			'ngaydat' => $this->ngaydat,
@@ -193,13 +201,28 @@ class dattiec
 		return $dattiecs;
 	}
 
-	
+
 	public function all_DV_ChuaDuyet($id_dv)
 	{
 		$dattiecs = [];
-		$stmt = $this->db->prepare('select * from dattiec where id_dv = :id_dv and trangthai=0');
+		$stmt = $this->db->prepare('select * from dattiec where id_dv = :id_dv and trangthai=0 order by ngaythuchien DESC');
 		$stmt->execute([
-			'id_dv'=>$id_dv
+			'id_dv' => $id_dv
+		]);
+		while ($row = $stmt->fetch()) {
+			$dattiec = new dattiec($this->db);
+			$dattiec->fillFromDB($row);
+			$dattiecs[] = $dattiec;
+		}
+		return $dattiecs;
+	}
+	public function all_DV_Loc($id_dv, $ngaydat)
+	{
+		$dattiecs = [];
+		$stmt = $this->db->prepare('select * from dattiec where id_dv = :id_dv and ngaydat = :ngaydat order by ngaythuchien DESC');
+		$stmt->execute([
+			'id_dv' => $id_dv,
+			'ngaydat'=> $ngaydat
 		]);
 		while ($row = $stmt->fetch()) {
 			$dattiec = new dattiec($this->db);
@@ -214,7 +237,7 @@ class dattiec
 		$dattiecs = [];
 		$stmt = $this->db->prepare('select * from dattiec where id_dv = :id_dv and trangthai=1');
 		$stmt->execute([
-			'id_dv'=>$id_dv
+			'id_dv' => $id_dv
 		]);
 		while ($row = $stmt->fetch()) {
 			$dattiec = new dattiec($this->db);
@@ -226,9 +249,23 @@ class dattiec
 	public function all_DV_DaHuy($id_dv)
 	{
 		$dattiecs = [];
-		$stmt = $this->db->prepare('select * from dattiec where id_dv = :id_dv and trangthai=2 or trangthai=3');
+		$stmt = $this->db->prepare('select * from dattiec where id_dv = :id_dv and (trangthai=2 or trangthai=3)');
 		$stmt->execute([
-			'id_dv'=>$id_dv
+			'id_dv' => $id_dv
+		]);
+		while ($row = $stmt->fetch()) {
+			$dattiec = new dattiec($this->db);
+			$dattiec->fillFromDB($row);
+			$dattiecs[] = $dattiec;
+		}
+		return $dattiecs;
+	}
+	public function findOneDT($id_dattiec)
+	{
+		$dattiecs = [];
+		$stmt = $this->db->prepare('select * from dattiec where id_dattiec = :id_dattiec ');
+		$stmt->execute([
+			'id_dattiec' => $id_dattiec
 		]);
 		while ($row = $stmt->fetch()) {
 			$dattiec = new dattiec($this->db);
@@ -238,6 +275,18 @@ class dattiec
 		return $dattiecs;
 	}
 
+
+
+	public function find($id_dattiec)
+	{
+		$stmt = $this->db->prepare('select * from dattiec where id_dattiec = :id_dattiec');
+		$stmt->execute(['id_dattiec' => $id_dattiec]);
+		if ($row = $stmt->fetch()) {
+			$this->fillFromDB($row);
+			return $this;
+		} else return null;
+	}
+
 	public function findDV($id_dv)
 	{
 		$stmt = $this->db->prepare('select * from dattiec m  join dichvu ct on m.id_dv = ct.id_dv where m.id_dv = :id_dv');
@@ -245,7 +294,8 @@ class dattiec
 		if ($row = $stmt->fetch()) {
 			$this->fillFromDB($row);
 			return $this;
-		} return null;
+		}
+		return null;
 	}
 
 	public function insertDattiec(array $data)
@@ -259,16 +309,17 @@ class dattiec
 
 	public function insert()
 	{
-	
+
 		$stmt = $this->db->prepare(
-			'insert into dattiec (id_dv, id_loaitiec, id_user, id_menu, soluongban, giodat, ngaydat, giamenu, tongtien, diachitiec,phuong, quan, tinh, trangthai, ngaythuchien)
-			values (:id_dv, :id_loaitiec, :id_user, :id_menu, :soluongban, :giodat, :ngaydat, :giamenu, :tongtien, :diachitiec, :phuong, :quan, :tinh ,0, now())'
+			'insert into dattiec (id_dv, id_loaitiec, id_user, id_menu, id_douong, soluongban, giodat, ngaydat, giamenu, tongtien, diachitiec,phuong, quan, tinh, trangthai, ngaythuchien)
+			values (:id_dv, :id_loaitiec, :id_user, :id_menu,:id_douong, :soluongban, :giodat, :ngaydat, :giamenu, :tongtien, :diachitiec, :phuong, :quan, :tinh ,0, now())'
 		);
 		$dattiec = $stmt->execute([
 			'id_dv' => $this->id_dv,
 			'id_loaitiec' => $this->id_loaitiec,
 			'id_user' => $this->id_user,
 			'id_menu' => $this->id_menu,
+			'id_douong' => $this->id_douong,
 			'soluongban' => $this->soluongban,
 			'giodat' => $this->giodat,
 			'ngaydat' => $this->ngaydat,
@@ -287,26 +338,37 @@ class dattiec
 		return $dattiec;
 	}
 
-	public function duyet($id_dattiec){
+	public function duyet($id_dattiec)
+	{
 		$stmt = $this->db->prepare('update dattiec set trangthai = 1 where id_dattiec = :id_dattiec');
 
 		$rs = $stmt->execute([
-			'id_dattiec'=>$id_dattiec
+			'id_dattiec' => $id_dattiec
+		]);
+	}
+	public function datLai($id_dattiec)
+	{
+		$stmt = $this->db->prepare('update dattiec set trangthai = 0 where id_dattiec = :id_dattiec');
+
+		$rs = $stmt->execute([
+			'id_dattiec' => $id_dattiec
 		]);
 	}
 
-	public function huy($id_dattiec){
+	public function huy($id_dattiec)
+	{
 		$stmt = $this->db->prepare('update dattiec set trangthai = 2 where id_dattiec = :id_dattiec');
 
 		$rs = $stmt->execute([
-			'id_dattiec'=>$id_dattiec
+			'id_dattiec' => $id_dattiec
 		]);
 	}
-	public function khachHuy($id_dattiec){
+	public function khachHuy($id_dattiec)
+	{
 		$stmt = $this->db->prepare('update dattiec set trangthai = 3 where id_dattiec = :id_dattiec');
 
 		$rs = $stmt->execute([
-			'id_dattiec'=>$id_dattiec
+			'id_dattiec' => $id_dattiec
 		]);
 	}
 	//Cap nhat hoac insert vao table
@@ -318,6 +380,7 @@ class dattiec
 			id_dv = :id_dv,
             id_loaitiec = :id_loaitiec,
 			id_menu = :id_menu,
+			id_douong = :id_douong,
 			soluongban = :soluongban,
 			giodat = :giodat,
 			ngaydat = :ngaydat,
@@ -332,6 +395,7 @@ class dattiec
 				'id_dv' => $this->id_dv,
 				'id_loaitiec' => $this->id_loaitiec,
 				'id_menu' => $this->id_menu,
+				'id_douong' => $this->id_douong,
 				'soluongban' => $this->soluongban,
 				'giodat' => $this->giodat,
 				'ngaydat' => $this->ngaydat,
@@ -345,14 +409,15 @@ class dattiec
 			]);
 		} else {
 			$stmt = $this->db->prepare(
-				'insert into dattiec (id_dv, id_loaitiec, id_user, id_menu, soluongban, giodat, ngaydat, giamenu, tongtien, diachitiec,phuong, quan, tinh, trangthai, ngaythuchien)
-				values (:id_dv ,:id_loaitiec, :id_user, :id_menu, :soluongban, :giodat, :ngaydat, :giamenu, :tongtien, :diachitiec, :phuong, :quan, :tinh ,0, now())'
+				'insert into dattiec (id_dv, id_loaitiec, id_user, id_menu,id_douong, soluongban, giodat, ngaydat, giamenu, tongtien, diachitiec,phuong, quan, tinh, trangthai, ngaythuchien)
+				values (:id_dv ,:id_loaitiec, :id_user, :id_menu, :id_douong, :soluongban, :giodat, :ngaydat, :giamenu, :tongtien, :diachitiec, :phuong, :quan, :tinh ,0, now())'
 			);
 			$result = $stmt->execute([
 				'id_dv' => $this->id_dv,
 				'id_loaitiec' => $this->id_loaitiec,
 				'id_user' => $this->id_user,
 				'id_menu' => $this->id_menu,
+				'id_douong' => $this->id_douong,
 				'soluongban' => $this->soluongban,
 				'giodat' => $this->giodat,
 				'ngaydat' => $this->ngaydat,
@@ -439,25 +504,23 @@ class dattiec
 	// 	]);
 	// }
 	//Dem tong so luot dat tiec
-	public function count_tongLuot(){
+	public function count_tongLuot()
+	{
 		$sql = "SELECT * from dattiec";
-	    $query = $this->db->prepare($sql);
-	    $query->execute([
-	       
-	    ]);
-	    return $query->rowCount();
-	    //  return  $query->fetch();
+		$query = $this->db->prepare($sql);
+		$query->execute([]);
+		return $query->rowCount();
+		//  return  $query->fetch();
 	}
 	//Dem so luot dat tiec tung dich vu
-	public function count_luotDat_theoDV($id_dv){
+	public function count_luotDat_theoDV($id_dv)
+	{
 		$sql = "SELECT * from dattiec where id_dv = :id_dv";
-	    $query = $this->db->prepare($sql);
-	    $query->execute([
-	       'id_dv'=>$id_dv
-	    ]);
-	    return $query->rowCount();
-	    //  return  $query->fetch();
+		$query = $this->db->prepare($sql);
+		$query->execute([
+			'id_dv' => $id_dv
+		]);
+		return $query->rowCount();
+		//  return  $query->fetch();
 	}
-
-
 }

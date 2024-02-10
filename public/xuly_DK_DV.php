@@ -2,7 +2,7 @@
 
 <?php
 session_start();
-include __DIR__ . "/../bootstrap.php";
+// include __DIR__ . "/../bootstrap.php";
 require_once __DIR__ . "/../bootstrap.php";
 
 use CT466\Project\dattiec;
@@ -28,6 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $array['password'] = $_POST['password'];
     $array['sdt'] = $_POST['sdt'];
     
+    $array['stk'] = $_POST['stk'];
+    $array['loai_the'] = $_POST['loai_the'];
     $array['dv_diachi'] = $_POST['diachi'];
     $array['dv_phuong'] = $_POST['phuong'];
     $array['dv_quan'] = $_POST['quan'];
@@ -45,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($dichvu->validate()) {
         $dichvu->save();
         echo '<script>alert("Đăng ký thành công! Chờ duyệt!.");</script>';
-        // echo '<script>window.location.href= "dangkiDV.php";</script>';
+        echo '<script>window.location.href= "dangkiDV.php";</script>';
     }else{
         echo '<script>alert("Đăng ký không thành công!!.");</script>';
     }

@@ -1,6 +1,6 @@
 <?php
 include "../bootstrap.php";
-
+session_start();
 use CT466\Project\User;
 
 $user = new User($PDO);
@@ -58,8 +58,14 @@ $id_loaitiec = isset($_REQUEST['id_loaitiec']) ?
 		?>
 		<section id="inner" class="inner-section section">
 			<h2 class="title">Nội dung tìm kiếm</h2>
-			Từ Khóa: <?php echo $_POST['tukhoa'];
-						$tukhoa =  $_POST['tukhoa'];
+			Từ Khóa: <?php 
+			if(isset($_POST['tukhoa'])){
+				echo $_POST['tukhoa'];
+				$tukhoa =  $_POST['tukhoa'];
+			}else{
+				$tukhoa = '';
+			}
+			
 						?>
 			<?php
 			$dichvus = $dichvu->search($tukhoa);
@@ -68,17 +74,19 @@ $id_loaitiec = isset($_REQUEST['id_loaitiec']) ?
 				<?php foreach ($dichvus as $dichvu) :
 					$dichvuID = $dichvu->getId();
 				?>
-					<div class="card-item-search">
-						<a href="detail.php?id=<?php echo $dichvuID; ?>">
-							<img class="w-50" src="img/upload/<?= htmlspecialchars($dichvu->image) ?>">
+					<div class="card-item">
+						<a href="">
+							<img style="width: 250px; height: 200px;" src="img/upload/<?= htmlspecialchars($dichvu->image) ?>">
 						</a>
+
 						<div class="text-uppercase p-3 font-weight-bold"><?= htmlspecialchars($dichvu->ten_dv) ?></div>
 						<div class="text-uppercase p-3 font-weight-bold"> SDT: <?= htmlspecialchars($dichvu->sdt) ?> </div>
 						<div class="text-uppercase p-3 font-weight-bold"> Tỉnh: <?= htmlspecialchars($dichvu->dv_tinh) ?> </div>
 
+
 						<hr>
 						<div class="card-footer">
-							<a class="btn btn-primary" href="chitietDV.php?id_dv=<?php echo $dichvuID; ?>">Chọn dịch vụ</a>
+							<a class="btn btn-primary" href="create_Menu.php?id_dv=<?php echo $dichvuID; ?>">Chọn Dịch Vụ</a>
 
 						</div>
 					</div>

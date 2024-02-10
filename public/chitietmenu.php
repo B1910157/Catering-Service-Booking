@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-include __DIR__ . "/../bootstrap.php";
+// include __DIR__ . "/../bootstrap.php";
 require_once __DIR__ . "/../bootstrap.php";
 
 use CT466\Project\Menu;

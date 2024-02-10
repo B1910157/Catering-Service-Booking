@@ -64,12 +64,12 @@ if (isset($_SESSION['id_dv'])) {
                             <tbody>
                                 <tr>
                                     <th>Mật khẩu cũ: </th>
-                                    <td><input type="password" name="passold" placeholder="Nhập vào mật khẩu cũ"></td>
+                                    <td><input type="password" name="passold" placeholder="Nhập vào mật khẩu cũ" required></td>
 
                                 </tr>
                                 <tr>
                                     <th>Mật khẩu mới: </th>
-                                    <td><input type="password" name="passnew1" placeholder="Nhập vào mật khẩu mới" id="passnew1"></td>
+                                    <td><input type="password" name="passnew1" placeholder="Nhập vào mật khẩu mới" id="passnew1" required></td>
                                 </tr>
                                 <tr>
                                     <th>Nhập lại mật khẩu: </th>

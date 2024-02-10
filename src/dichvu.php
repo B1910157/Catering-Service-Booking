@@ -12,6 +12,8 @@ class dichvu
     public $email;
     public $password;
     public $sdt;
+    public $stk;
+    public $loai_the;
 
     public $dv_diachi;
     public $dv_phuong;
@@ -49,6 +51,12 @@ class dichvu
         }
         if (isset($data['sdt'])) {
             $this->sdt = trim($data['sdt']);
+        }
+        if (isset($data['stk'])) {
+            $this->stk = trim($data['stk']);
+        }
+        if (isset($data['loai_the'])) {
+            $this->loai_the = trim($data['loai_the']);
         }
         if (isset($data['dv_diachi'])) {
             $this->dv_diachi = trim($data['dv_diachi']);
@@ -97,6 +105,12 @@ class dichvu
         if (isset($data['sdt'])) {
             $this->sdt = trim($data['sdt']);
         }
+        if (isset($data['stk'])) {
+            $this->stk = trim($data['stk']);
+        }
+        if (isset($data['loai_the'])) {
+            $this->loai_the = trim($data['loai_the']);
+        }
         if (isset($data['dv_diachi'])) {
             $this->dv_diachi = trim($data['dv_diachi']);
         }
@@ -135,6 +149,12 @@ class dichvu
         if (!$this->sdt) {
             $this->errors['sdt'] = 'SDT khong hop le.';
         }
+        if (!$this->stk) {
+            $this->errors['stk'] = 'stk khong hop le.';
+        }
+        if (!$this->loai_the) {
+            $this->errors['loai_the'] = 'loai_the khong hop le.';
+        }
         if (!$this->dv_diachi) {
             $this->errors['dv_diachi'] = 'Lỗi địa chỉ.';
         }
@@ -165,6 +185,12 @@ class dichvu
 
         if (!$this->sdt) {
             $this->errors['sdt'] = 'SDT khong hop le.';
+        }
+        if (!$this->stk) {
+            $this->errors['stk'] = 'stk khong hop le.';
+        }
+        if (!$this->loai_the) {
+            $this->errors['loai_the'] = 'loai_the khong hop le.';
         }
         if (!$this->dv_diachi) {
             $this->errors['dv_diachi'] = 'Lỗi địa chỉ.';
@@ -309,6 +335,8 @@ class dichvu
             'email' => $this->email,
             'password' => $this->password,
             'sdt' => $this->sdt,
+            'stk' => $this->stk,
+            'loai_the' => $this->loai_the,
             'dv_diachi' => $this->dv_diachi,
             'dv_phuong' => $this->dv_phuong,
             'dv_quan' => $this->dv_quan,
@@ -364,13 +392,15 @@ class dichvu
         $result = false;
         if ($this->id_dv > 0) {
             $stmt = $this->db->prepare('update dichvu set ten_dv = :ten_dv,
-            email = :email, sdt = :sdt, dv_diachi = :dv_diachi ,dv_phuong = :dv_phuong, dv_quan = :dv_quan, dv_tinh = :dv_tinh
+            email = :email, sdt = :sdt, stk = :stk, loai_the = :loai_the, dv_diachi = :dv_diachi ,dv_phuong = :dv_phuong, dv_quan = :dv_quan, dv_tinh = :dv_tinh
 			where id_dv = :id_dv');
             $result = $stmt->execute([
                 'ten_dv' => $this->ten_dv,
                 'email' => $this->email,
 
                 'sdt' => $this->sdt,
+                'stk' => $this->stk,
+                'loai_the' => $this->loai_the,
                 'dv_diachi' => $this->dv_diachi,
                 'dv_phuong' => $this->dv_phuong,
                 'dv_quan' => $this->dv_quan,
@@ -382,14 +412,16 @@ class dichvu
             // move_uploaded_file($_FILES['image']['tmp_name'], 'C:/xampp/apps/qldt/public/img/upload/' . $imgname);
         } else {
             $stmt = $this->db->prepare(
-                'insert into dichvu (ten_dv,email , password,  sdt, dv_diachi, dv_phuong, dv_quan, dv_tinh, image, ngaytao)
-			values (:ten_dv, :email, :password , :sdt, :dv_diachi, :dv_phuong, :dv_quan, :dv_tinh, :image , now())'
+                'insert into dichvu (ten_dv,email , password,  sdt, stk, loai_the, dv_diachi, dv_phuong, dv_quan, dv_tinh, image, ngaytao)
+			values (:ten_dv, :email, :password , :sdt, :stk, :loai_the, :dv_diachi, :dv_phuong, :dv_quan, :dv_tinh, :image , now())'
             );
             $result = $stmt->execute([
                 'ten_dv' => $this->ten_dv,
                 'email' => $this->email,
                 'password' => $this->password,
                 'sdt' => $this->sdt,
+                'stk' => $this->stk,
+                'loai_the' => $this->loai_the,
                 'dv_diachi' => $this->dv_diachi,
                 'dv_phuong' => $this->dv_phuong,
                 'dv_quan' => $this->dv_quan,

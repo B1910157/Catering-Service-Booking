@@ -63,6 +63,36 @@ class User {
 
 		return $this;
 	}
+	public function fillInfo(array $data)
+	{
+		if (isset($data['fullname'])) {
+			$this->fullname = trim($data['fullname']);
+		}
+		if (isset($data['username'])) {
+			$this->username = trim($data['username']);
+		}
+		if (isset($data['diachi'])) {
+			$this->diachi = trim($data['diachi']);
+		}
+		if (isset($data['phuong'])) {
+			$this->phuong = trim($data['phuong']);
+		}
+		if (isset($data['quan'])) {
+			$this->quan = trim($data['quan']);
+		}
+		if (isset($data['tinh'])) {
+			$this->tinh = trim($data['tinh']);
+		}
+
+		if (isset($data['sdt'])) {
+			$this->sdt = trim($data['sdt']);
+		}
+		if (isset($data['email'])) {
+			$this->email = trim($data['email']);
+		}
+
+		return $this;
+	}
 
 	public function getValidationErrors()
 	{
@@ -111,11 +141,47 @@ class User {
 		return empty($this->errors);
 	}
 
+	public function validateInfo()
+	{
+		if (!$this->fullname) {
+			$this->errors['fullname'] = 'Tên người dùng không hợp lệ.';
+		}
+
+		if (!$this->username) {
+			$this->errors['username'] = 'Tên đăng nhập không hợp lệ.';
+		} elseif (strlen($this->username) < 2) {
+			$this->errors['username'] = 'Tên đăng nhập phải hơn 2 ký tự.';
+		}
+
+		if (!$this->diachi) {
+			$this->errors['diachi'] = 'Lỗi địa chỉ.';
+		}
+		if (!$this->phuong) {
+			$this->errors['phuong'] = 'Lỗi địa chỉ.';
+		}
+		if (!$this->quan) {
+			$this->errors['quan'] = 'Lỗi địa chỉ.';
+		}
+		if (!$this->tinh) {
+			$this->errors['tinh'] = 'Lỗi địa chỉ.';
+		}
+
+		if (!$this->sdt) {
+			$this->errors['sdt'] = 'SDT khong hop le.';
+		}
+
+		if (!$this->email) {
+			$this->errors['email'] = 'Email khong hop lệ.';
+		}
+
+		return empty($this->errors);
+	}
+
 	//Lay tat ca du lieu tu bang users
 	public function all()
 	{
 		$users = [];
-		$stmt = $this->db->prepare('select * from users');
+		$stmt = $this->db->prepare('select * from users where admin = 0');
 		$stmt->execute();
 		while ($row = $stmt->fetch()) {
 			$user = new User($this->db);
@@ -191,12 +257,11 @@ class User {
 		$result = false;
 		if ($this->id_user > 0) {
 			$stmt = $this->db->prepare('update users set fullname = :fullname,
-			username = :username, password = :password, diachi = :diachi ,phuong = :phuong, quan = :quan, tinh = :tinh, sdt = :sdt, email = :email
+			username = :username, diachi = :diachi ,phuong = :phuong, quan = :quan, tinh = :tinh, sdt = :sdt, email = :email
 			where id_user = :id_user');
 			$result = $stmt->execute([
 			'fullname' => $this->fullname,
 			'username' => $this->username,
-			'password' => $this->password,
 			'diachi' => $this->diachi,
 			'phuong' => $this->phuong,
 			'quan' => $this->quan,
@@ -235,6 +300,30 @@ class User {
 		}
 		return false;
 	}
+	public function updateInfo(array $data)
+    {
+        $this->fillinfo($data);
+        if ($this->validateInfo()) {
+            return $this->save();
+        }
+        return false;
+    }
+
+	public function updatePass($id_user, $password)
+    {
+        $stmt = $this->db->prepare('update users set password =:password where id_user =:id_user');
+        $stmt->execute([
+            'password' => $password,
+            'id_user' => $id_user
+
+        ]);
+        if ($row = $stmt->fetch()) {
+            $this->fillFromDB($row);
+            return $this;
+        }
+        return null;
+    }
+
 
 	public function delete()
 	{
@@ -254,7 +343,7 @@ class User {
 	//Kiem tra dang nhap
 	//Ham tra ve so dong sau khi thuc hien cau lenh 
 	public function checkpoint($username,$password){
-		$sql = "SELECT * from users where username =:u and password =:p";
+		$sql = "SELECT * from users where username =:u and password =:p and admin = 0";
 	    $query = $this->db->prepare($sql);
 	    $query->execute([
 	        'u' => $username,
@@ -266,7 +355,28 @@ class User {
 	//Kiem tra dang nhap
 	//Ham tra ve mang du lieu username va password
 	public function checkpoint2($username,$password){
-		$sql = "SELECT * from users where username =:u and password =:p";
+		$sql = "SELECT * from users where username =:u and password =:p and admin = 0";
+	    $query = $this->db->prepare($sql);
+	    $query->execute([
+	        'u' => $username,
+	        'p' => $password
+	    ]);
+	    // return $row = $query->rowCount();
+	     return $query->fetch();
+	}
+
+	public function checkpointadmin($username,$password){
+		$sql = "SELECT * from users where username =:u and password =:p and admin = 1";
+	    $query = $this->db->prepare($sql);
+	    $query->execute([
+	        'u' => $username,
+	        'p' => $password
+	    ]);
+	    return $query->rowCount();
+	    //  return  $query->fetch();
+	}
+	public function checkpointadmin2($username,$password){
+		$sql = "SELECT * from users where username =:u and password =:p and admin = 1";
 	    $query = $this->db->prepare($sql);
 	    $query->execute([
 	        'u' => $username,

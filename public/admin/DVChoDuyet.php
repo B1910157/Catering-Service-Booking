@@ -15,6 +15,7 @@ $users = $user->all();
 $dichvus = $dichvu->allChoDuyet();
 
 
+
 ?>
 
 <!DOCTYPE html>
@@ -58,7 +59,8 @@ $dichvus = $dichvu->allChoDuyet();
                     <a href="DVHuy.php" class="btn btn-danger">Dịch vụ đã hủy</a>
                 </div>
             </div>
-            <h2>Dịch vụ Đang Chờ Duyệt</h2>
+            <hr>
+            <h2>Dịch vụ chờ duyệt</h2>
             <br>
             <hr>
             <table class="table table-bordered">
@@ -131,8 +133,8 @@ $dichvus = $dichvu->allChoDuyet();
                             </td>
                            
                             <td>
-                                <a href="xulyDuyet.php?duyet=<?php echo $dichvuID;?>" class="btn btn-success" onclick="return confirm('Xác nhận cho <?php echo $dichvu->ten_dv ?> hoạt động?')">Xác nhận dịch vụ</a>
-                                <a href="xulyHuy.php?huy=<?php echo $dichvuID;?>" class="btn btn-danger" onclick="return confirm('Xác nhận hủy <?php echo $dichvu->ten_dv ?> ?')">Hủy</a>
+                                <a href="xulyDuyet.php?duyet=<?php echo $dichvuID;?>" class="btn btn-success" onclick="return confirm('Xác nhận cho <?php echo $dichvu->ten_dv ?> hoạt động?')"><i class="fa fa-power-off" aria-hidden="true"></i></a>
+                                <a href="xulyHuy.php?huy=<?php echo $dichvuID;?>" class="btn btn-danger" onclick="return confirm('Xác nhận hủy <?php echo $dichvu->ten_dv ?> ?')"><i class="fa fa-window-close" aria-hidden="true"></i></a>
                             </td>
                         </tr>
                 </tbody>

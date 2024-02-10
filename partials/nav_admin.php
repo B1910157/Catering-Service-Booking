@@ -4,7 +4,9 @@
 if (isset($_GET['dangxuat']) && $_GET['dangxuat'] == 1) {
     unset($_SESSION['id_admin']);
     // echo '<script>alert("Đăng xuất thành công.");</script>';
-    echo '<script>window.location.href= "../index.php";</script>';
+    echo '<script>window.location.href= "../../index.php";</script>';
+    
+
 }
 ?>
 
@@ -29,10 +31,10 @@ if (isset($_GET['dangxuat']) && $_GET['dangxuat'] == 1) {
     <div class="menu-bar">
         <div class="menu">
             <ul class="menu-links">
-                <li class="search-box">
+                <!-- <li class="search-box">
                     <label for="search"><i class="fa fa-search icon"></i></label>
                     <input type="text" id="search" placeholder="Search...">
-                </li>
+                </li> -->
                 <li class="nav-link">
                     <a href="index.php">
                         <i class="fa fa-home icon"></i>
@@ -41,26 +43,32 @@ if (isset($_GET['dangxuat']) && $_GET['dangxuat'] == 1) {
                 </li>
                 <li class="nav-link">
                     <a href="qly_DV.php">
-                    <i class="fa fa-book icon"></i>
-                        <span class="text nav-text">Quản Lý Dịch Vụ</span>
+                    <i class="fa fa-users icon"></i>
+                        <span class="text nav-text">Dịch Vụ</span>
                     </a>
                 </li>
                 <li class="nav-link">
                     <a href="qly_TV.php">
                     <i class="fa fa-id-card-o icon"></i>
-                        <span class="text nav-text">Quản Lý Thành Viên</span>
+                        <span class="text nav-text">Thành Viên</span>
                     </a>
                 </li>
                 <li class="nav-link">
                     <a href="qly_LT.php">
-                    <i class="fa fa-free-code-camp icon"></i>
-                        <span class="text nav-text">Quản Lý Loại Tiệc</span>
+                    <i class="fa fa-plus icon"></i>
+                        <span class="text nav-text">Loại Tiệc</span>
                     </a>
                 </li>
                 <li class="nav-link">
                     <a href="qly_LM.php">
-                    <i class="fa fa-id-card-o icon"></i>
-                        <span class="text nav-text">Quản Lý Loại Món</span>
+                    <i class="fa fa-cutlery icon"></i>
+                        <span class="text nav-text">Loại Món</span>
+                    </a>
+                </li>
+                <li class="nav-link">
+                    <a href="qly_LH.php">
+                    <i class="fa fa-envelope-open icon"></i>
+                        <span class="text nav-text">Góp ý</span>
                     </a>
                 </li>
                 
@@ -68,7 +76,7 @@ if (isset($_GET['dangxuat']) && $_GET['dangxuat'] == 1) {
         </div>
         <div class="bottom-content">
             <li class="nav-link">
-                <a href="index.php?dangxuat=1" onclick="return confirm('Xác nhận đăng xuất?')">
+                <a href="index.php?dangxuat=1" onclick="return confirm('Xác nhận đăng xuất?')" >
                     <i class="fa fa-sign-out icon" style="transform: rotate(180deg);"></i>
                     <span class="text nav-text">Đăng xuất</span>
                 </a>
@@ -85,6 +93,7 @@ if (isset($_GET['dangxuat']) && $_GET['dangxuat'] == 1) {
             </li>
         </div>
     </div>
+
 
 </nav>
 <script src="js/blue.js">

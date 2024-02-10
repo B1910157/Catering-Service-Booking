@@ -105,6 +105,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     </td>
                                 </tr>
                                 <tr>
+                                    <th>Số tài khoản: </th>
+                                    <td><input type="text" name="stk" value="<?php
+                                                                                echo $dichvuLogin->stk;
+
+                                                                                ?>"></td>
+                                    <th>Loại thẻ:</th>
+                                    <td>
+                                        <input type="text" name="loai_the" value=" <?php echo $dichvuLogin->loai_the; ?>">
+                                    </td>
+                                </tr>
+                                <tr>
                                     <th>Email: </th>
                                     <td><input type="text" name="email" value="<?php
                                                                                 echo $dichvuLogin->email;

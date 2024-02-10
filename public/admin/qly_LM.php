@@ -97,7 +97,6 @@ $loaimons = $loaimon->all();
                             </tr>
                     </tbody>
                 <?php
-                            $n++;
                         endforeach; ?>
 
                 </table>

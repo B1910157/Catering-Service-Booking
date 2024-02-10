@@ -83,3 +83,78 @@ $id_loaitiec = isset($_REQUEST['id_loaitiec']) ?
 </body>
 
 </html>
+
+
+<!-- ĐỒ UỐNG -->
+<div class="container">
+        <div>
+            <h2 class="title"> Gói đồ uống của bạn </h2>
+            <div class="container row">
+
+                <?php
+                if (isset($_SESSION['id_user'])) {
+                    if ($douong_users != null) {
+
+                        foreach ($douong_users as $douong_user) :
+                            $id_douong_user = $douong_user->getId();
+                            // echo $id_douong_user;
+                ?>
+                            <div class="col-4 p-3">
+                                <?php
+                                $tong = 0;
+                                // $chitiet->getId();
+                                $chitiet1 = $chitietdouong->finddouong($id_douong_user);
+                                $chitiets = $chitietdouong->showdouong($id_douong_user);
+                                // $chitiet2 = $chitiet->showdouong($id);
+                                foreach ($chitiets as $chitiet1) : {
+                                        // code...
+
+
+
+                                ?>
+                                        <?php
+                                        $idmonn =  $douong->find($chitiet1->id_douong); ?>
+
+                                        <img style="width: 20px;  height: 20px;" src="../img/upload/<?php echo $douong->image; ?>">
+                                        <?php
+                                        echo 'Món:' . $douong->tendouong;
+                                        echo ' : ' . number_format($douong->giadouong) . ' vnđ <br>';
+                                        $gia = $idmonn->giadouong;
+                                        $tong = $tong + $gia;
+                                        ?>
+                                <?php }
+                                endforeach ?>
+                                <p>Tổng douong: <i class="text-danger"><?php echo $tong; ?></i> vnd</p>
+                                <input type="hidden" name="gia_douong" value="<?php echo $tong ?>">
+                                <a class="btn btn-primary" href="datTiec.php?id_menu=<?php echo $_GET['id_menu']; ?>&id_dv=<?php echo $id_dv ?>&id_menu_douong=<?php echo $douong_user->getId(); ?>">Chọn đồ uống</a>
+
+
+                            </div>
+                        <?php endforeach; ?>
+            </div>
+            <div class="row">
+                <div class="text-uppercase  font-weight-bold"><?php
+                                                                $dv = $douong_user->id_dv;
+                                                                $tendv = $dichvu->find($dv);
+                                                                echo $tendv->ten_dv;
+
+                                                                ?>
+                </div>
+
+
+            </div>
+
+
+        <?php } else { ?>
+            <div class="row">
+                <div class="col-12 text-center">
+                    Bạn chưa tạo menu nào trong dịch vụ này!!!
+                </div>
+
+            </div>
+
+    <?php }
+                } ?>
+
+
+        </div>

@@ -31,10 +31,10 @@ if (isset($_GET['dangxuat']) && $_GET['dangxuat'] == 1) {
     <div class="menu-bar">
         <div class="menu">
             <ul class="menu-links">
-                <li class="search-box">
+                <!-- <li class="search-box">
                     <label for="search"><i class="fa fa-search icon"></i></label>
                     <input type="text" id="search" placeholder="Search...">
-                </li>
+                </li> -->
                 <li class="nav-link">
                     <a href="index.php">
                         <i class="fa fa-home icon"></i>
@@ -42,21 +42,21 @@ if (isset($_GET['dangxuat']) && $_GET['dangxuat'] == 1) {
                     </a>
                 </li>
                 <li class="nav-link">
-                    <a href="QuanLyMenu.php">
+                    <a href="QuanLyDoUong.php">
                     <i class="fa fa-book icon"></i>
-                        <span class="text nav-text">Quản Lý Menu</span>
+                        <span class="text nav-text">Đồ Uống</span>
                     </a>
                 </li>
                 <li class="nav-link">
                     <a href="QuanLyMonAn.php">
                     <i class="fa fa-free-code-camp icon"></i>
-                        <span class="text nav-text">Quản Lý Món Ăn</span>
+                        <span class="text nav-text">Món Ăn</span>
                     </a>
                 </li>
                 <li class="nav-link">
                     <a href="dv.php">
                     <i class="fa fa-id-card-o icon"></i>
-                        <span class="text nav-text">Quản Lý Tài Khoản</span>
+                        <span class="text nav-text">Tài Khoản</span>
                     </a>
                 </li>
             </ul>

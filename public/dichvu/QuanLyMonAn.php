@@ -53,12 +53,16 @@ $id_loaimon = isset($_REQUEST['id_loaimon']) ?
         <?php include('../../partials/navAdmin.php');
         ?>
         <main>
-            <section id="inner" class="inner-section section">
+            <section class="inner-section section ">
                 <!-- SECTION HEADING -->
                 <hr>
                 <h2 class="section-heading text-center wow fadeIn title" data-wow-duration="1s">Quản Lý Món Ăn</h2>
                 <hr>
-                <form action="addmon.php" method="post" enctype="multipart/form-data" class="col-md-6 col-md-offset-3">
+                <div class="row">
+
+                </div>
+                <button onclick="showForm()" class="btn btn-primary m-5">Thêm món mới <i class="fa fa-plus" aria-hidden="true"></i> </button>
+                <form action="addmon.php" method="post" enctype="multipart/form-data" class="col-md-6 m-auto" style="display:none;" >
 
                     <input type="hidden" name="id_dv" value="<?php echo $id_dv  ?>">
 
@@ -74,11 +78,12 @@ $id_loaimon = isset($_REQUEST['id_loaimon']) ?
                     </div>
                     <div class="form-group<?= isset($errors['id_loaimon']) ? ' has-error' : '' ?>">
                         <label for="loaimon">Loại món:</label>
-                        <select name="id_loaimon">
+                        <select name="id_loaimon" class="custom-select">
                             <option hidden>--- Chọn loại món --- </option>
                             <?php foreach ($loaimons as $loaimon) :
                                 $loaimonID = $loaimon->getId(); ?>
-                                <option> <?php echo htmlspecialchars($loaimon->getId());
+                                <option> <?php
+                                            echo htmlspecialchars($loaimon->getId());
                                             echo htmlspecialchars($loaimon->tenloaimon) ?></option>
                             <?php endforeach; ?>
                         </select>
@@ -113,15 +118,15 @@ $id_loaimon = isset($_REQUEST['id_loaimon']) ?
                 <?php foreach ($monans as $monan) :
                     $monID = $monan->getId(); ?>
                     <div class="col-4 p-3">
-                        <div class="">
+                        <div class="border">
                             <a href="">
-                                <img class="w-75" style="height: 150px;" src="../img/upload/<?= htmlspecialchars($monan->image) ?>">
+                                <img class="w-75 m-auto" style="height: 150px;" src="../img/upload/<?= htmlspecialchars($monan->image) ?>">
                             </a>
-                            <div class="text-uppercase  font-weight-bold"><?= htmlspecialchars($monan->tenmon) ?></div>
-                            <div class="font-weight-bold"><?php $loai =  $loaimon->find($monan->id_loaimon);
+                            <div class="text-uppercase  font-weight-bold m-3"><?= htmlspecialchars($monan->tenmon) ?></div>
+                            <div class="font-weight-bold m-3"><?php $loai =  $loaimon->find($monan->id_loaimon);
                                                             echo $loai->tenloaimon; ?></div>
-                            <div><b>Giá:</b> <i class="text-danger"> <?php echo number_format($monan->gia_mon, 0, '', '.'); ?> VNĐ</i></div>
-                            <div class="">
+                            <div class="m-3"><b>Giá:</b> <i class="text-danger"> <?php echo number_format($monan->gia_mon, 0, '', '.'); ?> VNĐ</i></div>
+                            <div class="m-3">
                                 <a class="btn btn-warning" href="edit_Mon.php?id_mon=<?php echo $monID; ?>">Sửa</a>
                                 <a class="btn btn-danger" onclick="return confirm('Bạn có chắc muốn xóa món ăn?')" href="del_Mon.php?id_mon=<?php echo $monID; ?>">Xóa</a>
 
@@ -133,5 +138,12 @@ $id_loaimon = isset($_REQUEST['id_loaimon']) ?
         </main>
     </div>
 </body>
+
+<script>
+function showForm() {
+    var form = document.querySelector('form');
+    form.style.display = 'block';
+}
+</script>
 
 </html>
